@@ -77,7 +77,10 @@ list1 <- c("Country", "ID", "age", "gender",
            "empathic_concern_01", "empathic_concern_02", "empathic_concern_03",
            "perspective_taking_01", "perspective_taking_02", 
            "perspective_taking_03", "perspective_taking_04", "history_discrimination",
-           "og_hostility", "og_cooperation", "fight_outgroup")
+           "og_hostility", "og_cooperation", "fight_outgroup",
+           "event_positive_affect", "event_negative_affect", "event_episodic_recall",
+           "event_shared_perception", "event_event_reflection", 
+           "event_transformative_indiv", "event_transformative_group", "imagistic")
 
 ## Subset datasets to only the columns in the above list:
 dsgmb1 <- dsgmb[, ..list1]
@@ -476,8 +479,15 @@ Variables of interest in the analysis:
 - Empathic concern
 - Perspective taking
 - Perceived history of discrimination
-
-
+- Imagistic items:
+  - Event: Positive affect
+  - Event: Negative affect
+  - Event: Episodic recall
+  - Event: Shared perception
+  - Event: Reflection
+  - Event: Transformative for individual
+  - Event: Transformative for group
+  
 ## Variable: Endorsement of Barrier Bound Leadership (BBL)
 
 ```{r, error = F, message = F, warning=F}
@@ -895,6 +905,417 @@ ggplot(aes(x = history_discrimination,
 
 ```
 
+## Variable: Event: Positive Affect
+
+```{r, error = F, message = F, warning=F}
+
+summary(ds$event_positive_affect)
+
+ds %>% drop_na(event_positive_affect)%>%
+ggplot(aes(x = event_positive_affect))+
+  geom_histogram(color = "black",
+                 fill = "gray",
+                 bins = 15)+
+  geom_textvline(label = "Mean = 4.00", 
+                 xintercept = 4.00, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+
+  labs(x = "Event: Positive affect score", 
+       y = "Frequency", 
+       title = "Event: Positive affect (full sample)")+
+  theme_bw()
+
+
+ds %>% drop_na(event_positive_affect, Country)%>%
+ggplot(aes(x = event_positive_affect))+
+  geom_histogram(color = "black",
+                 fill = "gray",
+                 bins = 15)+
+ labs(x = "Event: Positive affect score", 
+       y = "Frequency", 
+       title = "Event: Positive affect by country")+
+  facet_wrap(~Country)+
+  theme_bw()
+
+ds %>% drop_na(event_positive_affect)%>%
+ggplot(aes(x = event_positive_affect,
+           y = Country))+
+  geom_boxplot(fill = "grey")+
+  geom_textvline(label = " ", 
+                 xintercept = 4.00, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+ 
+  labs(x = "Event: Positive affect score", 
+       y = "Frequency", 
+       title = "Event: Positive affect by country")+
+  #facet_wrap(~Country, nrow = 2)+
+  theme_bw()
+
+```
+
+
+## Variable: Event: Negative Affect
+
+```{r, error = F, message = F, warning=F}
+
+summary(ds$event_negative_affect)
+
+ds %>% drop_na(event_negative_affect)%>%
+ggplot(aes(x = event_negative_affect))+
+  geom_histogram(color = "black",
+                 fill = "gray",
+                 bins = 15)+
+  geom_textvline(label = "Mean = 5.00", 
+                 xintercept = 5.00, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+
+  labs(x = "Event: Negative affect score", 
+       y = "Frequency", 
+       title = "Event: Negative affect (full sample)")+
+  theme_bw()
+
+
+ds %>% drop_na(event_negative_affect, Country)%>%
+ggplot(aes(x = event_negative_affect))+
+  geom_histogram(color = "black",
+                 fill = "gray",
+                 bins = 15)+
+ labs(x = "Event: Negative affect score", 
+       y = "Frequency", 
+       title = "Event: Negative affect by country")+
+  facet_wrap(~Country)+
+  theme_bw()
+
+ds %>% drop_na(event_negative_affect)%>%
+ggplot(aes(x = event_negative_affect,
+           y = Country))+
+  geom_boxplot(fill = "grey")+
+  geom_textvline(label = " ", 
+                 xintercept = 5.00, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+ 
+  labs(x = "Event: Negative affect score", 
+       y = "Frequency", 
+       title = "Event: Negative affect by country")+
+  #facet_wrap(~Country, nrow = 2)+
+  theme_bw()
+
+```
+
+
+## Variable: Event: Episodic recall
+
+```{r, error = F, message = F, warning=F}
+
+summary(ds$event_episodic_recall)
+
+ds %>% drop_na(event_episodic_recall)%>%
+ggplot(aes(x = event_episodic_recall))+
+  geom_histogram(color = "black",
+                 fill = "gray",
+                 bins = 15)+
+  geom_textvline(label = "Mean = 6.00", 
+                 xintercept = 6.00, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+
+  labs(x = "Event: Episodic recall score", 
+       y = "Frequency", 
+       title = "Event: Episodic recall (full sample)")+
+  theme_bw()
+
+
+ds %>% drop_na(event_episodic_recall, Country)%>%
+ggplot(aes(x = event_episodic_recall))+
+  geom_histogram(color = "black",
+                 fill = "gray",
+                 bins = 15)+
+ labs(x = "Event: Episodic recall score", 
+       y = "Frequency", 
+       title = "Event: Episodic recall by country")+
+  facet_wrap(~Country)+
+  theme_bw()
+
+ds %>% drop_na(event_episodic_recall)%>%
+ggplot(aes(x = event_episodic_recall,
+           y = Country))+
+  geom_boxplot(fill = "grey")+
+  geom_textvline(label = " ", 
+                 xintercept = 6.00, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+ 
+  labs(x = "Event: Episodic recall score", 
+       y = "Frequency", 
+       title = "Event: Episodic recall by country")+
+  #facet_wrap(~Country, nrow = 2)+
+  theme_bw()
+
+```
+
+
+
+## Variable: Event: Shared perception
+
+```{r, error = F, message = F, warning=F}
+
+summary(ds$event_shared_perception)
+
+ds %>% drop_na(event_shared_perception)%>%
+ggplot(aes(x = event_shared_perception))+
+  geom_histogram(color = "black",
+                 fill = "gray",
+                 bins = 15)+
+  geom_textvline(label = "Mean = 6.00", 
+                 xintercept = 6.00, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+
+  labs(x = "Event: Shared perception score", 
+       y = "Frequency", 
+       title = "Event: Shared perception (full sample)")+
+  theme_bw()
+
+
+ds %>% drop_na(event_shared_perception, Country)%>%
+ggplot(aes(x = event_shared_perception))+
+  geom_histogram(color = "black",
+                 fill = "gray",
+                 bins = 15)+
+ labs(x = "Event: Shared perception score", 
+       y = "Frequency", 
+       title = "Event: Shared perception by country")+
+  facet_wrap(~Country)+
+  theme_bw()
+
+ds %>% drop_na(event_shared_perception)%>%
+ggplot(aes(x = event_shared_perception,
+           y = Country))+
+  geom_boxplot(fill = "grey")+
+  geom_textvline(label = " ", 
+                 xintercept = 6.00, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+ 
+  labs(x = "Event: Shared perception score", 
+       y = "Frequency", 
+       title = "Event: Shared perception by country")+
+  #facet_wrap(~Country, nrow = 2)+
+  theme_bw()
+
+```
+
+
+
+## Variable: Event: Reflection
+
+```{r, error = F, message = F, warning=F}
+
+ds$event_reflection <- ds$event_event_reflection
+summary(ds$event_reflection)
+
+ds %>% drop_na(event_reflection)%>%
+ggplot(aes(x = event_reflection))+
+  geom_histogram(color = "black",
+                 fill = "gray",
+                 bins = 15)+
+  geom_textvline(label = "Mean = 6.00", 
+                 xintercept = 6.00, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+
+  labs(x = "Event: Reflection score", 
+       y = "Frequency", 
+       title = "Event: Reflection (full sample)")+
+  theme_bw()
+
+
+ds %>% drop_na(event_reflection, Country)%>%
+ggplot(aes(x = event_reflection))+
+  geom_histogram(color = "black",
+                 fill = "gray",
+                 bins = 15)+
+ labs(x = "Event: Reflection score", 
+       y = "Frequency", 
+       title = "Event: Reflection by country")+
+  facet_wrap(~Country)+
+  theme_bw()
+
+ds %>% drop_na(event_reflection)%>%
+ggplot(aes(x = event_reflection,
+           y = Country))+
+  geom_boxplot(fill = "grey")+
+  geom_textvline(label = " ", 
+                 xintercept = 6.00, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+ 
+  labs(x = "Event: Reflection score", 
+       y = "Frequency", 
+       title = "Event: Reflection by country")+
+  #facet_wrap(~Country, nrow = 2)+
+  theme_bw()
+
+```
+
+## Variable: Event: Transformative for individual
+
+```{r, error = F, message = F, warning=F}
+
+summary(ds$event_transformative_indiv)
+
+ds %>% drop_na(event_transformative_indiv)%>%
+ggplot(aes(x = event_transformative_indiv))+
+  geom_histogram(color = "black",
+                 fill = "gray",
+                 bins = 15)+
+  geom_textvline(label = "Mean = 5.00", 
+                 xintercept = 5.00, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+
+  labs(x = "Event: Transformative for individual score", 
+       y = "Frequency", 
+       title = "Event: Transformative for individual (full sample)")+
+  theme_bw()
+
+
+ds %>% drop_na(event_transformative_indiv, Country)%>%
+ggplot(aes(x = event_transformative_indiv))+
+  geom_histogram(color = "black",
+                 fill = "gray",
+                 bins = 15)+
+ labs(x = "Event: Transformative for individual score", 
+       y = "Frequency", 
+       title = "Event: Transformative for individual by country")+
+  facet_wrap(~Country)+
+  theme_bw()
+
+ds %>% drop_na(event_transformative_indiv)%>%
+ggplot(aes(x = event_transformative_indiv,
+           y = Country))+
+  geom_boxplot(fill = "grey")+
+  geom_textvline(label = " ", 
+                 xintercept = 5.00, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+ 
+  labs(x = "Event: Transformative for individual score", 
+       y = "Frequency", 
+       title = "Event: Transformative for individual by country")+
+  #facet_wrap(~Country, nrow = 2)+
+  theme_bw()
+
+```
+
+
+## Variable: Event: Transformative for group
+
+```{r, error = F, message = F, warning=F}
+
+summary(ds$event_transformative_group)
+
+ds %>% drop_na(event_transformative_group)%>%
+ggplot(aes(x = event_transformative_group))+
+  geom_histogram(color = "black",
+                 fill = "gray",
+                 bins = 15)+
+  geom_textvline(label = "Mean = 5.00", 
+                 xintercept = 5.00, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+
+  labs(x = "Event: Transformative for group score", 
+       y = "Frequency", 
+       title = "Event: Transformative for group (full sample)")+
+  theme_bw()
+
+
+ds %>% drop_na(event_transformative_group, Country)%>%
+ggplot(aes(x = event_transformative_group))+
+  geom_histogram(color = "black",
+                 fill = "gray",
+                 bins = 15)+
+ labs(x = "Event: Transformative for group score", 
+       y = "Frequency", 
+       title = "Event: Transformative for group by country")+
+  facet_wrap(~Country)+
+  theme_bw()
+
+ds %>% drop_na(event_transformative_group)%>%
+ggplot(aes(x = event_transformative_group,
+           y = Country))+
+  geom_boxplot(fill = "grey")+
+  geom_textvline(label = " ", 
+                 xintercept = 5.00, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+ 
+  labs(x = "Event: Transformative for group score", 
+       y = "Frequency", 
+       title = "Event: Transformative for group by country")+
+  #facet_wrap(~Country, nrow = 2)+
+  theme_bw()
+
+```
+
+
+## Variable: Imagistic event (sum of all subscales)
+
+
+```{r, error = F, message = F, warning=F}
+
+ds$event_imagistic <- ds$imagistic
+
+summary(ds$event_imagistic)
+
+ds %>% drop_na(event_imagistic)%>%
+ggplot(aes(x = event_imagistic))+
+  geom_histogram(color = "black",
+                 fill = "gray",
+                 bins = 15)+
+  geom_textvline(label = "Mean = 35.00", 
+                 xintercept = 35.00, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+
+  labs(x = "Event: Imagistic score", 
+       y = "Frequency", 
+       title = "Event: Imagistic (full sample)")+
+  theme_bw()
+
+
+ds %>% drop_na(event_imagistic, Country)%>%
+ggplot(aes(x = event_imagistic))+
+  geom_histogram(color = "black",
+                 fill = "gray",
+                 bins = 15)+
+ labs(x = "Event: Imagistic score", 
+       y = "Frequency", 
+       title = "Event: Imagistic by country")+
+  facet_wrap(~Country)+
+  theme_bw()
+
+ds %>% drop_na(event_imagistic)%>%
+ggplot(aes(x = event_imagistic,
+           y = Country))+
+  geom_boxplot(fill = "grey")+
+  geom_textvline(label = " ", 
+                 xintercept = 35.00, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+ 
+  labs(x = "Event: Imagistic score", 
+       y = "Frequency", 
+       title = "Event: Imagistic by country")+
+  #facet_wrap(~Country, nrow = 2)+
+  theme_bw()
+
+```
 
 # **Section 3. Data Analysis: Linear models (OLS regression)**
 

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.251">
+<meta name="generator" content="quarto-1.2.313">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -276,6 +276,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <p class="date">July 28, 2023</p>
     </div>
   </div>
+  
     
   </div>
   
@@ -831,11 +832,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="variable-education" class="level2">
 <h2 class="anchored" data-anchor-id="variable-education">Variable: Education</h2>
-<p><strong>This variable needs lots of cleaning by someone familiar to Uganda education system. It is not possible to visualize it in its current form, which looks like this:</strong></p>
+<p><strong>This variable needs lots of cleaning by someone familiar to Uganda education system. It is not possible to visualize it in its current form, which looks something like this:</strong></p>
 <div class="cell">
 <details>
 <summary>Display code</summary>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ds<span class="sc">$</span>Level_of_education)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">table</span>(ds<span class="sc">$</span>Level_of_education), <span class="at">n =</span> <span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -868,250 +869,6 @@ Advance Certificate in Electrical Installation
                        certificate IN PLUMBING 
                                              1 
      Certification in Interior/Exterior design 
-                                             1 
-Class II Certificate in Mechanical Engineering 
-                                             1 
-                                       College 
-                                             1 
-                          College - UCC TOroro 
-                                             1 
-                          College with Diploma 
-                                             1 
-                                        Degree 
-                                             2 
-                                       diploma 
-                                             1 
-                                       Diploma 
-                                            13 
-                          diploma in education 
-                                             1 
-         East African certificate of Education 
-                                             1 
-                              Grade II Teacher 
-                                             1 
-                                           N/A 
-                                            16 
-           National Certificate in Agriculture 
-                                             1 
-                                         Never 
-                                             2 
-                                           NIL 
-                                             1 
-                           no formal education 
-                                             2 
-                           No formal education 
-                                            18 
-                              No formal school 
-                                             1 
-                           No formal schooling 
-                                             1 
-                                           Non 
-                                             3 
-                                           NON 
-                                             3 
-                                          None 
-                                             5 
-                                   Not Studied 
-                                             1 
-                                             O 
-                                             3 
-                                       O level 
-                                             4 
-                                       O Level 
-                                             1 
-                                      O' Level 
-                                            10 
-                                            P1 
-                                             1 
-                                            P3 
-                                             7 
-                                            P4 
-                                             6 
-                                            P5 
-                                             5 
-                                            p6 
-                                             2 
-                                            P6 
-                                             7 
-                                            P7 
-                                            16 
-                                            PG 
-                                             1 
-                                           PLE 
-                                             2 
-                            Priamary seven (7) 
-                                             1 
-                                       primary 
-                                             3 
-                                       Primary 
-                                            30 
-                                     Primary 1 
-                                             2 
-                                     Primary 2 
-                                             2 
-                                     Primary 3 
-                                             3 
-                                     primary 4 
-                                             1 
-                                     Primary 4 
-                                             2 
-                                     Primary 5 
-                                             5 
-                                     Primary 6 
-                                             8 
-                                     primary 7 
-                                             2 
-                                     Primary 7 
-                                            12 
-                              primary 7 leaver 
-                                             1 
-                                  primary five 
-                                             1 
-                                  Primary Five 
-                                             3 
-                              Primary five (5) 
-                                             3 
-                                  Primary four 
-                                             1 
-                                  Primary Four 
-                                             3 
-                              Primary four (4) 
-                                             1 
-                            Primary Four Class 
-                                             1 
-                               Primary four(4) 
-                                             1 
-                                 primary level 
-                                            11 
-                                 Primary level 
-                                            68 
-                               Primary one (1) 
-                                             1 
-                                 Primary Seven 
-                                             3 
-                             Primary seven (7) 
-                                             6 
-                                   primary six 
-                                             3 
-                                   Primary six 
-                                             1 
-                                   Primary Six 
-                                             5 
-                               Primary six (6) 
-                                             3 
-                                 Primary three 
-                                             1 
-                                 Primary Three 
-                                             1 
-                             Primary three (3) 
-                                             5 
-                                   primary two 
-                                             1 
-                               Primary two (2) 
-                                             1 
-                                      Primary6 
-                                             1 
-                                  Primay level 
-                                             1 
-                                      prmary 7 
-                                             1 
-                                  prmary level 
-                                             1 
-                                           S.2 
-                                             1 
-                                           S.3 
-                                             1 
-                                            S1 
-                                             2 
-                                            S2 
-                                             6 
-                                            S3 
-                                             6 
-                                            S4 
-                                             8 
-                                  S4 Secondary 
-                                             1 
-                                            S5 
-                                             1 
-                                            S6 
-                                             3 
-                                     Sec level 
-                                             1 
-                                     secondary 
-                                            28 
-                                     Secondary 
-                                            10 
-                                  Secondary  6 
-                                             1 
-                                 Secondary (1) 
-                                             1 
-                                   Secondary 1 
-                                             1 
-                                   secondary 2 
-                                             1 
-                                   Secondary 2 
-                                             3 
-                                   Secondary 3 
-                                             2 
-                                   Secondary 4 
-                                             4 
-                                   Secondary 5 
-                                             2 
-                                   Secondary 6 
-                                             5 
-                            Secondary five (5) 
-                                             1 
-                            secondary four (4) 
-                                             2 
-                            Secondary four (4) 
-                                             3 
-                                  secondary S4 
-                                             1 
-                             Secondary six (6) 
-                                             1 
-                           Secondary three (3) 
-                                             2 
-                             secondary two (2) 
-                                             2 
-                             Secondary two (2) 
-                                             1 
-                                        Senior 
-                                             1 
-                                   Senior five 
-                                             1 
-                                   Senior four 
-                                             2 
-                             Senior four class 
-                                             1 
-                                Senior one (1) 
-                                             2 
-                                 Senior school 
-                                             1 
-                              Senior six class 
-                                             1 
-                                  Senior three 
-                                             2 
-                                  Senior Three 
-                                             1 
-           Senior three class, currently in s4 
-                                             1 
-                                    Senior Two 
-                                             1 
-                                Senior two (2) 
-                                             3 
-                              Senior Two Class 
-                                             1 
-                                   Senior Year 
-                                             1 
-                                      Tertiary 
-                                             6 
-             Tertiary Institution (Cerificate) 
-                                             1 
-                                          UACE 
-                                             2 
-                                           UCE 
-                                             6 
-                                    University 
                                              1 </code></pre>
 </div>
 </div>
@@ -1585,10 +1342,10 @@ Cumulative Var    0.41    0.59    0.74   0.780
 
 Factor Correlations:
         Factor1 Factor2 Factor3 Factor4
-Factor1  1.0000  0.0193 -0.1518 -0.0960
-Factor2  0.0193  1.0000  0.1781  0.6551
-Factor3 -0.1518  0.1781  1.0000  0.0611
-Factor4 -0.0960  0.6551  0.0611  1.0000
+Factor1  1.0000  0.0193  0.1518 -0.0960
+Factor2  0.0193  1.0000 -0.1781  0.6551
+Factor3  0.1518 -0.1781  1.0000 -0.0611
+Factor4 -0.0960  0.6551 -0.0611  1.0000
 
 Test of the hypothesis that 4 factors are sufficient.
 The chi square statistic is 46 on 24 degrees of freedom.
@@ -6120,7 +5877,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -6207,24 +5981,42 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
@@ -6696,11 +6488,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb383-466"><a href="#cb383-466" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb383-467"><a href="#cb383-467" aria-hidden="true" tabindex="-1"></a><span class="fu">## Variable: Education</span></span>
 <span id="cb383-468"><a href="#cb383-468" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb383-469"><a href="#cb383-469" aria-hidden="true" tabindex="-1"></a>**This variable needs lots of cleaning by someone familiar to Uganda education system. It is not possible to visualize it in its current form, which looks like this:**</span>
+<span id="cb383-469"><a href="#cb383-469" aria-hidden="true" tabindex="-1"></a>**This variable needs lots of cleaning by someone familiar to Uganda education system. It is not possible to visualize it in its current form, which looks something like this:**</span>
 <span id="cb383-470"><a href="#cb383-470" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb383-471"><a href="#cb383-471" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error = F, message = F, warning = F}</span></span>
 <span id="cb383-472"><a href="#cb383-472" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb383-473"><a href="#cb383-473" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ds<span class="sc">$</span>Level_of_education)</span>
+<span id="cb383-473"><a href="#cb383-473" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">table</span>(ds<span class="sc">$</span>Level_of_education), <span class="at">n =</span> <span class="dv">15</span>)</span>
 <span id="cb383-474"><a href="#cb383-474" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb383-475"><a href="#cb383-475" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb383-476"><a href="#cb383-476" aria-hidden="true" tabindex="-1"></a></span>

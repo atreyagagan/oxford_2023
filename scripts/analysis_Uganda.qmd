@@ -466,11 +466,11 @@ table(ds$Ethnicity)
 
 ## Variable: Education
 
-**This variable needs lots of cleaning by someone familiar to Uganda education system. It is not possible to visualize it in its current form, which looks like this:**
+**This variable needs lots of cleaning by someone familiar to Uganda education system. It is not possible to visualize it in its current form, which looks something like this:**
 
 ```{r, error = F, message = F, warning = F}
 
-table(ds$Level_of_education)
+head(table(ds$Level_of_education), n = 15)
 
 ```
 
