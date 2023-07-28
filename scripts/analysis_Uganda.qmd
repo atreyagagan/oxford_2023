@@ -3051,8 +3051,6 @@ table(ds$ethnicity)
 ## Import text related datasets:
 bing <- as.data.table(get_sentiments("bing"))
 stopwords <- as.data.table(stop_words)
-stopwords_es <- as.data.table(stopwords_es)
-stopwords_es <- setnames(stopwords_es, 1, "word")
 
 ## Corpus of most common words:
 corpus1 <- ds %>%
@@ -3060,11 +3058,9 @@ corpus1 <- ds %>%
 
 corpus1 <- as.data.table(corpus1)
 stopwords <- as.data.table(stopwords)
-stopwords_es <- as.data.table(stopwords_es)
 
 ## Remove stop words:
 corpus1 <- corpus1[!stopwords, on = "word"]
-corpus1 <- corpus1[!stopwords_es, on = "word"]
 
 ## Merge corpus with data:
 df2 <- merge(corpus1, bing, by = "word")
