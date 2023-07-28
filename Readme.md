@@ -1,1 +1,1 @@
-Data viz and analysis for Oxford Anthropology, 2023. 
+ 2023 Data analysis and visualization for Oxford Anthropology.
