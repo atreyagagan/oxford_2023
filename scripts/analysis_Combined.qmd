@@ -1,5 +1,5 @@
 ---
-title: "Data Analysis and Visualization <br> Community Data (Combined)"
+title: "Data Analysis and Visualization <br> Community Data: Combined Report"
 author: Gagan Atreya
 date: today
 format:
@@ -66,6 +66,9 @@ dsuga <- fread("/home/gagan/Desktop/oxford/data/cleanedds/dsuga.csv")
 dsuga$Country <- "Uganda"
 dsuga$id <- 1:nrow(dsuga)
 dsuga$ID <- paste0("UGA",dsuga$id)
+
+## Correct asterisk pattern for stargazer tables:
+starpattern <- "<em>&#42;p&lt;0.05;&nbsp;&#42;&#42;p&lt;0.01;&nbsp;&#42;&#42;&#42;p&lt;0.001</em>"
 
 ## List of variables to retain from all datasets:
 list1 <- c("Country", "ID", "age", "gender", 
@@ -487,6 +490,7 @@ Variables of interest in the analysis:
   - Event: Reflection
   - Event: Transformative for individual
   - Event: Transformative for group
+  - Imagistic event (sum of all above)
   
 ## Variable: Endorsement of Barrier Bound Leadership (BBL)
 
@@ -1057,8 +1061,6 @@ ggplot(aes(x = event_episodic_recall,
 
 ```
 
-
-
 ## Variable: Event: Shared perception
 
 ```{r, error = F, message = F, warning=F}
@@ -1317,7 +1319,7 @@ ggplot(aes(x = event_imagistic,
 
 ```
 
-# **Section 3. Data Analysis: Linear models (OLS regression)**
+# **Section 3. OLS models: BBL/BCL vs group fusion/identification **
 
 ```{r, error = F, message = F, warning = F}
 
@@ -1364,7 +1366,9 @@ lm02 <- lm(BCL~Ingroup_fusion+Ingroup_identification+Outgroup_bonds+Empathic_con
 stargazer(lm01, lm02, 
           type = "html", 
           star.cutoffs = c(0.05, 0.01, 0.001),
-          out = "table1.html")
+          out = "table1.html",
+          notes = starpattern, 
+          notes.append = F)
 
 ```
 
@@ -1419,7 +1423,9 @@ lm_uga_02 <- lm(BCL~Ingroup_fusion+Ingroup_identification+Outgroup_bonds+Empathi
 stargazer(lm_gmb_01, lm_gmb_02, 
           type = "html", 
           star.cutoffs = c(0.05, 0.01, 0.001),
-          out = "table1.html")
+          out = "table1.html",
+          notes = starpattern, 
+          notes.append = F)
 
 ```
 
@@ -1431,7 +1437,9 @@ stargazer(lm_gmb_01, lm_gmb_02,
 stargazer(lm_pak_01, lm_pak_02, 
           type = "html", 
           star.cutoffs = c(0.05, 0.01, 0.001),
-          out = "table1.html")
+          out = "table1.html",
+          notes = starpattern, 
+          notes.append = F)
 ```
 
 ## Tanzania:
@@ -1441,7 +1449,9 @@ stargazer(lm_pak_01, lm_pak_02,
 stargazer(lm_tza_01, lm_tza_02, 
           type = "html", 
           star.cutoffs = c(0.05, 0.01, 0.001),
-          out = "table1.html")
+          out = "table1.html",
+          notes = starpattern, 
+          notes.append = F)
 
 ```
 
@@ -1452,12 +1462,14 @@ stargazer(lm_tza_01, lm_tza_02,
 stargazer(lm_uga_01, lm_uga_02, 
           type = "html", 
           star.cutoffs = c(0.05, 0.01, 0.001),
-          out = "table1.html")
+          out = "table1.html",
+          notes = starpattern, 
+          notes.append = F)
 
 ```
 
 
-# **Section 4. Coefficient plots**
+# **Section 4. Coefficient plots for section 3**
 
 ## Coefficient plots: full sample
 
@@ -1592,7 +1604,7 @@ mpuga
 
 ```
 
-# **Section 5. OLS models with alternate DVs**
+# **Section 5. OLS models: Outgroup hostility/cooperation/fight vs group fusion/identification**
 
 ## Regression models: full sample
 
@@ -1620,7 +1632,9 @@ lm03 <- lm(Fight_OG~Ingroup_fusion+Ingroup_identification+Outgroup_bonds+Empathi
 stargazer(lm01, lm02, lm03,
           type = "html", 
           star.cutoffs = c(0.05, 0.01, 0.001),
-          out = "table1.html")
+          out = "table1.html",
+          notes = starpattern, 
+          notes.append = F)
 
 ```
 
@@ -1687,7 +1701,9 @@ lm_uga_03 <- lm(Fight_OG~Ingroup_fusion+Ingroup_identification+Outgroup_bonds+Em
 stargazer(lm_gmb_01, lm_gmb_02, lm_gmb_03, 
           type = "html", 
           star.cutoffs = c(0.05, 0.01, 0.001),
-          out = "table1.html")
+          out = "table1.html",
+          notes = starpattern, 
+          notes.append = F)
 
 ```
 
@@ -1699,7 +1715,9 @@ stargazer(lm_gmb_01, lm_gmb_02, lm_gmb_03,
 stargazer(lm_pak_01, lm_pak_02, lm_pak_03,
           type = "html", 
           star.cutoffs = c(0.05, 0.01, 0.001),
-          out = "table1.html")
+          out = "table1.html",
+          notes = starpattern, 
+          notes.append = F)
 ```
 
 ## Tanzania:
@@ -1709,7 +1727,9 @@ stargazer(lm_pak_01, lm_pak_02, lm_pak_03,
 stargazer(lm_tza_01, lm_tza_02, lm_tza_03,
           type = "html", 
           star.cutoffs = c(0.05, 0.01, 0.001),
-          out = "table1.html")
+          out = "table1.html",
+          notes = starpattern, 
+          notes.append = F)
 
 ```
 
@@ -1720,12 +1740,14 @@ stargazer(lm_tza_01, lm_tza_02, lm_tza_03,
 stargazer(lm_uga_01, lm_uga_02, lm_uga_03,
           type = "html", 
           star.cutoffs = c(0.05, 0.01, 0.001),
-          out = "table1.html")
+          out = "table1.html",
+          notes = starpattern, 
+          notes.append = F)
 
 ```
 
 
-# **Section 6. Coefficient plots: Alternate regression models**
+# **Section 6. Coefficient plots for section 5**
 
 ## Coefficient plots: full sample
 
@@ -1947,3 +1969,387 @@ mp42
 mp43
 
 ```
+
+# **Section 7. OLS models: Group fusion/identification vs imagistic items**
+
+
+## Regression models: full sample
+
+```{r, error = F, message = F, warning = F}
+
+## Three regression models predicting IG fusion/identification and OG bonds:
+
+lm01 <- lm(Ingroup_fusion~event_positive_affect+event_negative_affect+event_episodic_recall+
+             event_shared_perception+event_reflection+event_transformative_indiv+
+             event_transformative_group+Age+`Gender: `+`SES: `, 
+           data = ds)
+
+lm02 <- lm(Ingroup_identification~event_positive_affect+event_negative_affect+event_episodic_recall+
+             event_shared_perception+event_reflection+event_transformative_indiv+
+             event_transformative_group+Age+`Gender: `+`SES: `, 
+           data = ds)
+
+lm03 <- lm(Outgroup_bonds~event_positive_affect+event_negative_affect+event_episodic_recall+
+             event_shared_perception+event_reflection+event_transformative_indiv+
+             event_transformative_group+Age+`Gender: `+`SES: `, 
+           data = ds)
+
+```
+
+
+```{r, error = F, message = F, warning = F, results = "asis"}
+
+stargazer(lm01, lm02, lm03,
+          type = "html", 
+          star.cutoffs = c(0.05, 0.01, 0.001),
+          out = "table1.html",
+          notes = starpattern, 
+          notes.append = F)
+
+```
+
+## Regression models: individual countries
+
+```{r, error = F, message = F, warning = F}
+
+## Twelve regression models predicting endorsement of BBL vs BCL for four countries
+
+lm_gmb_01 <- lm(Ingroup_fusion~event_positive_affect+event_negative_affect+event_episodic_recall+
+             event_shared_perception+event_reflection+event_transformative_indiv+
+             event_transformative_group+Age+`Gender: `+`SES: `, 
+             data = dsgmb)
+
+lm_gmb_02 <- lm(Ingroup_identification~event_positive_affect+event_negative_affect+event_episodic_recall+
+             event_shared_perception+event_reflection+event_transformative_indiv+
+             event_transformative_group+Age+`Gender: `+`SES: `, 
+             data = dsgmb)
+
+lm_gmb_03 <- lm(Outgroup_bonds~event_positive_affect+event_negative_affect+event_episodic_recall+
+             event_shared_perception+event_reflection+event_transformative_indiv+
+             event_transformative_group+Age+`Gender: `+`SES: `, 
+             data = dsgmb)
+
+lm_pak_01 <- lm(Ingroup_fusion~event_positive_affect+event_negative_affect+event_episodic_recall+
+             event_shared_perception+event_reflection+event_transformative_indiv+
+             event_transformative_group+Age+`Gender: `+`SES: `, 
+             data = dspak)
+
+lm_pak_02 <- lm(Ingroup_identification~event_positive_affect+event_negative_affect+event_episodic_recall+
+             event_shared_perception+event_reflection+event_transformative_indiv+
+             event_transformative_group+Age+`Gender: `+`SES: `, 
+             data = dspak)
+
+lm_pak_03 <- lm(Outgroup_bonds~event_positive_affect+event_negative_affect+event_episodic_recall+
+             event_shared_perception+event_reflection+event_transformative_indiv+
+             event_transformative_group+Age+`Gender: `+`SES: `, 
+             data = dspak)
+
+lm_tza_01 <- lm(Ingroup_fusion~event_positive_affect+event_negative_affect+event_episodic_recall+
+             event_shared_perception+event_reflection+event_transformative_indiv+
+             event_transformative_group+Age+`Gender: `+`SES: `, 
+             data = dstza)
+
+lm_tza_02 <- lm(Ingroup_identification~event_positive_affect+event_negative_affect+event_episodic_recall+
+             event_shared_perception+event_reflection+event_transformative_indiv+
+             event_transformative_group+Age+`Gender: `+`SES: `, 
+             data = dstza)
+
+lm_tza_03 <- lm(Outgroup_bonds~event_positive_affect+event_negative_affect+event_episodic_recall+
+             event_shared_perception+event_reflection+event_transformative_indiv+
+             event_transformative_group+Age+`Gender: `+`SES: `, 
+             data = dstza)
+
+lm_uga_01 <- lm(Ingroup_fusion~event_positive_affect+event_negative_affect+event_episodic_recall+
+             event_shared_perception+event_reflection+event_transformative_indiv+
+             event_transformative_group+Age+`Gender: `+`SES: `, 
+             data = dsuga)
+
+lm_uga_02 <- lm(Ingroup_identification~event_positive_affect+event_negative_affect+event_episodic_recall+
+             event_shared_perception+event_reflection+event_transformative_indiv+
+             event_transformative_group+Age+`Gender: `+`SES: `, 
+             data = dsuga)
+
+lm_uga_03 <- lm(Outgroup_bonds~event_positive_affect+event_negative_affect+event_episodic_recall+
+             event_shared_perception+event_reflection+event_transformative_indiv+
+             event_transformative_group+Age+`Gender: `+`SES: `, 
+             data = dsuga)
+
+```
+
+## Gambia:
+
+```{r, error = F, message = F, warning = F, results = "asis"}
+stargazer(lm_gmb_01, lm_gmb_02, lm_gmb_03, 
+          type = "html", 
+          star.cutoffs = c(0.05, 0.01, 0.001),
+          out = "table1.html",
+          notes = starpattern, 
+          notes.append = F)
+
+```
+
+
+## Pakistan:
+
+```{r, error = F, message = F, warning = F, results = "asis"}
+
+stargazer(lm_pak_01, lm_pak_02, lm_pak_03,
+          type = "html", 
+          star.cutoffs = c(0.05, 0.01, 0.001),
+          out = "table1.html",
+          notes = starpattern, 
+          notes.append = F)
+```
+
+## Tanzania:
+
+```{r, error = F, message = F, warning = F, results = "asis"}
+
+stargazer(lm_tza_01, lm_tza_02, lm_tza_03,
+          type = "html", 
+          star.cutoffs = c(0.05, 0.01, 0.001),
+          out = "table1.html",
+          notes = starpattern, 
+          notes.append = F)
+
+```
+
+## Uganda:
+
+```{r, error = F, message = F, warning = F, results = "asis"}
+
+stargazer(lm_uga_01, lm_uga_02, lm_uga_03,
+          type = "html", 
+          star.cutoffs = c(0.05, 0.01, 0.001),
+          out = "table1.html",
+          notes = starpattern, 
+          notes.append = F)
+
+```
+
+# **Section 8. Coefficient plots for section 7**
+
+## Coefficient plots: full sample
+
+```{r, error = F, message = F, warning = F, results = "asis"}
+
+mp09 <- modelplot(lm01, 
+          coef_rename = TRUE,
+          coef_omit = 'Interc') +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue"))+
+  labs(title = "Ingroup fusion", 
+       x = "OLS coefficients with 95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+mp10 <- modelplot(lm02, 
+          coef_rename = TRUE,
+          coef_omit = 'Interc') +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue"))+
+  labs(title = "Ingroup identification", 
+       x = "OLS coefficients with 95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+mp11a <- modelplot(lm03, 
+          coef_rename = TRUE,
+          coef_omit = 'Interc') +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue"))+
+  labs(title = "Outgroup bonds", 
+       x = "OLS coefficients with 95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+mp09 
+
+mp10
+
+mp11a
+
+```
+
+
+## Coefficient plots: individual countries 
+
+```{r, error = F, message = F, warning = F}
+
+mp11 <- modelplot(lm_gmb_01, 
+          coef_rename = TRUE,
+          coef_omit = 'Interc') +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue"))+
+  labs(title = "Ingroup fusion: Gambia", 
+       x = "OLS coefficients with 95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+mp12 <- modelplot(lm_gmb_02, 
+          coef_rename = TRUE,
+          coef_omit = 'Interc') +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue"))+
+  labs(title = "Ingroup identification: Gambia", 
+       x = "OLS coefficients with 95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+mp13 <- modelplot(lm_gmb_03, 
+          coef_rename = TRUE,
+          coef_omit = 'Interc') +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue"))+
+  labs(title = "Outgroup bonds: Gambia", 
+       x = "OLS coefficients with 95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+
+mp21 <- modelplot(lm_pak_01, 
+          coef_rename = TRUE,
+          coef_omit = 'Interc') +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue"))+
+  labs(title = "Ingroup fusion: Pakistan", 
+       x = "OLS coefficients with 95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+mp22<- modelplot(lm_pak_02, 
+          coef_rename = TRUE,
+          coef_omit = 'Interc') +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue"))+
+  labs(title = "Ingroup identification: Pakistan", 
+       x = "OLS coefficients with 95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+mp23 <- modelplot(lm_pak_03, 
+          coef_rename = TRUE,
+          coef_omit = 'Interc') +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue"))+
+  labs(title = "Outgroup bonds: Pakistan", 
+       x = "OLS coefficients with 95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+
+mp31 <- modelplot(lm_tza_01, 
+          coef_rename = TRUE,
+          coef_omit = 'Interc') +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue"))+
+  labs(title = "Ingroup fusion: Tanzania", 
+       x = "OLS coefficients with 95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+mp32<- modelplot(lm_tza_02, 
+          coef_rename = TRUE,
+          coef_omit = 'Interc') +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue"))+
+  labs(title = "Ingroup identification: Tanzania", 
+       x = "OLS coefficients with 95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+mp33 <- modelplot(lm_tza_03, 
+          coef_rename = TRUE,
+          coef_omit = 'Interc') +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue"))+
+  labs(title = "Outgroup bonds: Tanzania", 
+       x = "OLS coefficients with 95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+mp41 <- modelplot(lm_uga_01, 
+          coef_rename = TRUE,
+          coef_omit = 'Interc') +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue"))+
+  labs(title = "Ingroup fusion: Uganda", 
+       x = "OLS coefficients with 95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+mp42<- modelplot(lm_uga_02, 
+          coef_rename = TRUE,
+          coef_omit = 'Interc') +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue"))+
+  labs(title = "Ingroup identification: Uganda", 
+       x = "OLS coefficients with 95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+mp43 <- modelplot(lm_uga_03, 
+          coef_rename = TRUE,
+          coef_omit = 'Interc') +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue"))+
+  labs(title = "Outgroup bonds: Uganda", 
+       x = "OLS coefficients with 95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+```
+
+## Gambia:
+
+```{r, error = F, message = F, warning = F}
+
+mp11 
+
+mp12 
+
+mp13
+
+```
+
+## Pakistan:
+
+```{r, error = F, message = F, warning = F}
+
+mp21 
+
+mp22
+
+mp23
+
+
+```
+
+## Tanzania:
+
+```{r, error = F, message = F, warning = F}
+
+mp31
+
+mp32
+
+mp33
+
+```
+
+## Uganda:
+
+```{r, error = F, message = F, warning = F}
+
+mp41
+
+mp42
+
+mp43
+
+```
+
+
+
+
+
