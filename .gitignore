@@ -1,0 +1,9 @@
+## Ignore all directories called invoices and Bali_study:
+**/invoices
+
+# **/Bali_study
+
+## Ignore all files that are csv, xls, xlsx, etc:
+# *.csv
+# *.xls
+
