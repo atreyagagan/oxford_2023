@@ -1,6 +1,7 @@
 ---
 title: "Data Analysis and Visualization <br> Tanzania Community Data"
 author: Gagan Atreya
+date: today
 format:
   html:
     toc: true
@@ -8,6 +9,13 @@ format:
     toc-depth: 4
     theme: lumen
     fontsize: large
+    code-fold: true
+    code-tools: true
+    code-summary: "Display code"
+    code-overflow: wrap
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
 # **Section 1. Demographics**
@@ -28,38 +36,6 @@ pacman::p_load(data.table, tidyverse, haven, labelled, vtable,
                corrplot, tm, readxl, arsenal)
 
 ## Import dataset:
-
-## CSV file as the dataset:
-ds_csv <- fread("~/Desktop/oxford/data/tanzania/Tanzania Data Entry - Sheet1.csv")
-
-## XLSX file as the dataset:
-ds_xls <- read_excel("~/Desktop/oxford/data/tanzania/Tanzania Data Entry.xlsx")
-#ds2 <- as.data.table(ds2)
-```
-
-
-# **Comparison of two datasets**
-
-```{r, error = F, message = F, warning = F}
-
-identical(ds_csv, ds_xls) 
-
-all.equal(ds_csv, ds_xls)
-
-cmp <- comparedf(ds_csv, ds_xls)
-
-n.diffs(cmp)
-
-summary(cmp)
-
-diffs(cmp, by.var = TRUE)
-
-```
-
-It seems that there are substantial differences between the xls file and the csv file.
-I will be using the xls file for the analysis:
-
-```{r, error = F, message = F, warning = F}
 
 #ds <- read_excel("~/Desktop/oxford/data/tanzania/Tanzania Data Entry.xlsx")
 
