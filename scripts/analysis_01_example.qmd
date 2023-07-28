@@ -1,13 +1,23 @@
 ---
 title: "Example Data Analysis and Visualization <br> BCL Dataset"
 author: Gagan Atreya
+date: today
 format:
   html:
     toc: true
     toc-location: left
     toc-depth: 4
     theme: lumen
+    fontsize: large
+    code-fold: true
+    code-tools: true
+    code-summary: "Display code"
+    code-overflow: wrap
+editor: 
+  markdown: 
+    wrap: 72
 ---
+
 
 # **Introduction**
 

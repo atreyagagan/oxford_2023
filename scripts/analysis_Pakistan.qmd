@@ -1,6 +1,7 @@
 ---
 title: "Data Analysis and Visualization <br> Pakistan Community Data"
 author: Gagan Atreya
+date: today
 format:
   html:
     toc: true
@@ -8,7 +9,15 @@ format:
     toc-depth: 4
     theme: lumen
     fontsize: large
+    code-fold: true
+    code-tools: true
+    code-summary: "Display code"
+    code-overflow: wrap
+editor: 
+  markdown: 
+    wrap: 72
 ---
+
 
 # **Section 1. Demographics**
 
