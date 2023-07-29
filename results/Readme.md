@@ -1,9 +1,8 @@
-[URL](https://rpubs.com/atreyagaganumn/oxf23gambia){:target="_blank" rel="noopener"}
 
  <table>
   <tr>
     <th> N </th>
-    <th> Url to results pages: </th>
+    <th> Open urls in new windows: </th>
     </tr>
   <tr>
     <td> 1 </td>
