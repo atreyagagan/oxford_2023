@@ -2,7 +2,7 @@
  <table>
   <tr>
     <th> N </th>
-    <th> Open urls in new windows: </th>
+    <th> Open links in new window: </th>
     </tr>
   <tr>
     <td> 1 </td>
