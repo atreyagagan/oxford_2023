@@ -1,9 +1,8 @@
-## Link to results pages:
 
  <table>
   <tr>
     <th> N </th>
-    <th> Details </th>
+    <th> Url to results pages: </th>
     </tr>
   <tr>
     <td> 1 </td>
