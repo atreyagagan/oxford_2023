@@ -253,6 +253,9 @@ ds$jobnature <- ifelse(ds$jobnature == "", NA, ds$jobnature)
 #sentence case:
 ds$jobnature <- gsub("(\\D)(\\D+)", "\\U\\1\\L\\2", ds$jobnature, perl = TRUE)
 
+ds$jobnature <- ifelse(ds$jobnature == "Non-government/self-employed", 
+                       "Non-government", ds$jobnature)
+
 table(ds$jobnature)
 
 ds %>% drop_na(jobnature) %>%

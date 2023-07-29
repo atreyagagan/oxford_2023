@@ -41,7 +41,7 @@
   <td> 9 </td>
   <td>  </td>
    </tr>
-       <tr>
+   <tr>
   <td> 10 </td>
   <td>  </td>
    </tr>
