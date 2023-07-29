@@ -1,4 +1,4 @@
-[URL]("https://rpubs.com/atreyagaganumn/oxf23gambia"){:target="_blank"}
+[URL](https://rpubs.com/atreyagaganumn/oxf23gambia){:target="_blank"}
 
 
  <table>
