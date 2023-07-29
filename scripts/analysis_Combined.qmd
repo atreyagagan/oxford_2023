@@ -71,7 +71,7 @@ dsuga$ID <- paste0("UGA",dsuga$id)
 starpattern <- "<em>&#42;p&lt;0.05;&nbsp;&#42;&#42;p&lt;0.01;&nbsp;&#42;&#42;&#42;p&lt;0.001</em>"
 
 ## List of variables to retain from all datasets:
-list1 <- c("Country", "ID", "age", "gender", 
+list1 <- c("ID", "Country", "age", "gender", 
            "ses", "jobnature", "religion", "married",
            "IGF01", "IGF02", "IGF03", "IGI01", "IGI02", "IGI03", 
            "OGF01", "OGF02", "OGF03", "OGI01", "OGI02", "OGI03",
@@ -80,10 +80,10 @@ list1 <- c("Country", "ID", "age", "gender",
            "empathic_concern_01", "empathic_concern_02", "empathic_concern_03",
            "perspective_taking_01", "perspective_taking_02", 
            "perspective_taking_03", "perspective_taking_04", "history_discrimination",
-           "og_hostility", "og_cooperation", "fight_outgroup",
+           "og_hostility", "og_cooperation", "fight_outgroup", "imagistic",
            "event_positive_affect", "event_negative_affect", "event_episodic_recall",
            "event_shared_perception", "event_event_reflection", 
-           "event_transformative_indiv", "event_transformative_group", "imagistic")
+           "event_transformative_indiv", "event_transformative_group")
 
 ## Subset datasets to only the columns in the above list:
 dsgmb1 <- dsgmb[, ..list1]
@@ -93,6 +93,15 @@ dsuga1 <- dsuga[, ..list1]
 
 ## Merged dataset with needed columns only
 ds <- rbind(dsgmb1, dspak1, dstza1, dsuga1)
+
+## Rename the "Event_" columns with title case:
+ds01 <- ds[, 1:44]
+ds02 <- ds[, !(2:44)]
+colnames(ds02) <- stringr::str_to_title(colnames(ds02))
+ds02$ID <- ds02$Id
+ds02 <- ds02[, !1]
+ds <- merge(ds01, ds02, by = "ID")
+rm(ds01, ds02)
 
 ```
 
@@ -913,10 +922,10 @@ ggplot(aes(x = history_discrimination,
 
 ```{r, error = F, message = F, warning=F}
 
-summary(ds$event_positive_affect)
+summary(ds$Event_positive_affect)
 
-ds %>% drop_na(event_positive_affect)%>%
-ggplot(aes(x = event_positive_affect))+
+ds %>% drop_na(Event_positive_affect)%>%
+ggplot(aes(x = Event_positive_affect))+
   geom_histogram(color = "black",
                  fill = "gray",
                  bins = 15)+
@@ -931,8 +940,8 @@ ggplot(aes(x = event_positive_affect))+
   theme_bw()
 
 
-ds %>% drop_na(event_positive_affect, Country)%>%
-ggplot(aes(x = event_positive_affect))+
+ds %>% drop_na(Event_positive_affect, Country)%>%
+ggplot(aes(x = Event_positive_affect))+
   geom_histogram(color = "black",
                  fill = "gray",
                  bins = 15)+
@@ -942,8 +951,8 @@ ggplot(aes(x = event_positive_affect))+
   facet_wrap(~Country)+
   theme_bw()
 
-ds %>% drop_na(event_positive_affect)%>%
-ggplot(aes(x = event_positive_affect,
+ds %>% drop_na(Event_positive_affect)%>%
+ggplot(aes(x = Event_positive_affect,
            y = Country))+
   geom_boxplot(fill = "grey")+
   geom_textvline(label = " ", 
@@ -964,10 +973,10 @@ ggplot(aes(x = event_positive_affect,
 
 ```{r, error = F, message = F, warning=F}
 
-summary(ds$event_negative_affect)
+summary(ds$Event_negative_affect)
 
-ds %>% drop_na(event_negative_affect)%>%
-ggplot(aes(x = event_negative_affect))+
+ds %>% drop_na(Event_negative_affect)%>%
+ggplot(aes(x = Event_negative_affect))+
   geom_histogram(color = "black",
                  fill = "gray",
                  bins = 15)+
@@ -982,8 +991,8 @@ ggplot(aes(x = event_negative_affect))+
   theme_bw()
 
 
-ds %>% drop_na(event_negative_affect, Country)%>%
-ggplot(aes(x = event_negative_affect))+
+ds %>% drop_na(Event_negative_affect, Country)%>%
+ggplot(aes(x = Event_negative_affect))+
   geom_histogram(color = "black",
                  fill = "gray",
                  bins = 15)+
@@ -993,8 +1002,8 @@ ggplot(aes(x = event_negative_affect))+
   facet_wrap(~Country)+
   theme_bw()
 
-ds %>% drop_na(event_negative_affect)%>%
-ggplot(aes(x = event_negative_affect,
+ds %>% drop_na(Event_negative_affect)%>%
+ggplot(aes(x = Event_negative_affect,
            y = Country))+
   geom_boxplot(fill = "grey")+
   geom_textvline(label = " ", 
@@ -1015,10 +1024,10 @@ ggplot(aes(x = event_negative_affect,
 
 ```{r, error = F, message = F, warning=F}
 
-summary(ds$event_episodic_recall)
+summary(ds$Event_episodic_recall)
 
-ds %>% drop_na(event_episodic_recall)%>%
-ggplot(aes(x = event_episodic_recall))+
+ds %>% drop_na(Event_episodic_recall)%>%
+ggplot(aes(x = Event_episodic_recall))+
   geom_histogram(color = "black",
                  fill = "gray",
                  bins = 15)+
@@ -1033,8 +1042,8 @@ ggplot(aes(x = event_episodic_recall))+
   theme_bw()
 
 
-ds %>% drop_na(event_episodic_recall, Country)%>%
-ggplot(aes(x = event_episodic_recall))+
+ds %>% drop_na(Event_episodic_recall, Country)%>%
+ggplot(aes(x = Event_episodic_recall))+
   geom_histogram(color = "black",
                  fill = "gray",
                  bins = 15)+
@@ -1044,8 +1053,8 @@ ggplot(aes(x = event_episodic_recall))+
   facet_wrap(~Country)+
   theme_bw()
 
-ds %>% drop_na(event_episodic_recall)%>%
-ggplot(aes(x = event_episodic_recall,
+ds %>% drop_na(Event_episodic_recall)%>%
+ggplot(aes(x = Event_episodic_recall,
            y = Country))+
   geom_boxplot(fill = "grey")+
   geom_textvline(label = " ", 
@@ -1065,10 +1074,10 @@ ggplot(aes(x = event_episodic_recall,
 
 ```{r, error = F, message = F, warning=F}
 
-summary(ds$event_shared_perception)
+summary(ds$Event_shared_perception)
 
-ds %>% drop_na(event_shared_perception)%>%
-ggplot(aes(x = event_shared_perception))+
+ds %>% drop_na(Event_shared_perception)%>%
+ggplot(aes(x = Event_shared_perception))+
   geom_histogram(color = "black",
                  fill = "gray",
                  bins = 15)+
@@ -1083,8 +1092,8 @@ ggplot(aes(x = event_shared_perception))+
   theme_bw()
 
 
-ds %>% drop_na(event_shared_perception, Country)%>%
-ggplot(aes(x = event_shared_perception))+
+ds %>% drop_na(Event_shared_perception, Country)%>%
+ggplot(aes(x = Event_shared_perception))+
   geom_histogram(color = "black",
                  fill = "gray",
                  bins = 15)+
@@ -1094,8 +1103,8 @@ ggplot(aes(x = event_shared_perception))+
   facet_wrap(~Country)+
   theme_bw()
 
-ds %>% drop_na(event_shared_perception)%>%
-ggplot(aes(x = event_shared_perception,
+ds %>% drop_na(Event_shared_perception)%>%
+ggplot(aes(x = Event_shared_perception,
            y = Country))+
   geom_boxplot(fill = "grey")+
   geom_textvline(label = " ", 
@@ -1117,11 +1126,11 @@ ggplot(aes(x = event_shared_perception,
 
 ```{r, error = F, message = F, warning=F}
 
-ds$event_reflection <- ds$event_event_reflection
-summary(ds$event_reflection)
+ds$Event_reflection <- ds$Event_event_reflection
+summary(ds$Event_reflection)
 
-ds %>% drop_na(event_reflection)%>%
-ggplot(aes(x = event_reflection))+
+ds %>% drop_na(Event_reflection)%>%
+ggplot(aes(x = Event_reflection))+
   geom_histogram(color = "black",
                  fill = "gray",
                  bins = 15)+
@@ -1136,8 +1145,8 @@ ggplot(aes(x = event_reflection))+
   theme_bw()
 
 
-ds %>% drop_na(event_reflection, Country)%>%
-ggplot(aes(x = event_reflection))+
+ds %>% drop_na(Event_reflection, Country)%>%
+ggplot(aes(x = Event_reflection))+
   geom_histogram(color = "black",
                  fill = "gray",
                  bins = 15)+
@@ -1147,8 +1156,8 @@ ggplot(aes(x = event_reflection))+
   facet_wrap(~Country)+
   theme_bw()
 
-ds %>% drop_na(event_reflection)%>%
-ggplot(aes(x = event_reflection,
+ds %>% drop_na(Event_reflection)%>%
+ggplot(aes(x = Event_reflection,
            y = Country))+
   geom_boxplot(fill = "grey")+
   geom_textvline(label = " ", 
@@ -1168,10 +1177,10 @@ ggplot(aes(x = event_reflection,
 
 ```{r, error = F, message = F, warning=F}
 
-summary(ds$event_transformative_indiv)
+summary(ds$Event_transformative_indiv)
 
-ds %>% drop_na(event_transformative_indiv)%>%
-ggplot(aes(x = event_transformative_indiv))+
+ds %>% drop_na(Event_transformative_indiv)%>%
+ggplot(aes(x = Event_transformative_indiv))+
   geom_histogram(color = "black",
                  fill = "gray",
                  bins = 15)+
@@ -1186,8 +1195,8 @@ ggplot(aes(x = event_transformative_indiv))+
   theme_bw()
 
 
-ds %>% drop_na(event_transformative_indiv, Country)%>%
-ggplot(aes(x = event_transformative_indiv))+
+ds %>% drop_na(Event_transformative_indiv, Country)%>%
+ggplot(aes(x = Event_transformative_indiv))+
   geom_histogram(color = "black",
                  fill = "gray",
                  bins = 15)+
@@ -1197,8 +1206,8 @@ ggplot(aes(x = event_transformative_indiv))+
   facet_wrap(~Country)+
   theme_bw()
 
-ds %>% drop_na(event_transformative_indiv)%>%
-ggplot(aes(x = event_transformative_indiv,
+ds %>% drop_na(Event_transformative_indiv)%>%
+ggplot(aes(x = Event_transformative_indiv,
            y = Country))+
   geom_boxplot(fill = "grey")+
   geom_textvline(label = " ", 
@@ -1219,10 +1228,10 @@ ggplot(aes(x = event_transformative_indiv,
 
 ```{r, error = F, message = F, warning=F}
 
-summary(ds$event_transformative_group)
+summary(ds$Event_transformative_group)
 
-ds %>% drop_na(event_transformative_group)%>%
-ggplot(aes(x = event_transformative_group))+
+ds %>% drop_na(Event_transformative_group)%>%
+ggplot(aes(x = Event_transformative_group))+
   geom_histogram(color = "black",
                  fill = "gray",
                  bins = 15)+
@@ -1237,8 +1246,8 @@ ggplot(aes(x = event_transformative_group))+
   theme_bw()
 
 
-ds %>% drop_na(event_transformative_group, Country)%>%
-ggplot(aes(x = event_transformative_group))+
+ds %>% drop_na(Event_transformative_group, Country)%>%
+ggplot(aes(x = Event_transformative_group))+
   geom_histogram(color = "black",
                  fill = "gray",
                  bins = 15)+
@@ -1248,8 +1257,8 @@ ggplot(aes(x = event_transformative_group))+
   facet_wrap(~Country)+
   theme_bw()
 
-ds %>% drop_na(event_transformative_group)%>%
-ggplot(aes(x = event_transformative_group,
+ds %>% drop_na(Event_transformative_group)%>%
+ggplot(aes(x = Event_transformative_group,
            y = Country))+
   geom_boxplot(fill = "grey")+
   geom_textvline(label = " ", 
@@ -1271,12 +1280,12 @@ ggplot(aes(x = event_transformative_group,
 
 ```{r, error = F, message = F, warning=F}
 
-ds$event_imagistic <- ds$imagistic
+ds$Event_imagistic <- ds$imagistic
 
-summary(ds$event_imagistic)
+summary(ds$Event_imagistic)
 
-ds %>% drop_na(event_imagistic)%>%
-ggplot(aes(x = event_imagistic))+
+ds %>% drop_na(Event_imagistic)%>%
+ggplot(aes(x = Event_imagistic))+
   geom_histogram(color = "black",
                  fill = "gray",
                  bins = 15)+
@@ -1291,8 +1300,8 @@ ggplot(aes(x = event_imagistic))+
   theme_bw()
 
 
-ds %>% drop_na(event_imagistic, Country)%>%
-ggplot(aes(x = event_imagistic))+
+ds %>% drop_na(Event_imagistic, Country)%>%
+ggplot(aes(x = Event_imagistic))+
   geom_histogram(color = "black",
                  fill = "gray",
                  bins = 15)+
@@ -1302,8 +1311,8 @@ ggplot(aes(x = event_imagistic))+
   facet_wrap(~Country)+
   theme_bw()
 
-ds %>% drop_na(event_imagistic)%>%
-ggplot(aes(x = event_imagistic,
+ds %>% drop_na(Event_imagistic)%>%
+ggplot(aes(x = Event_imagistic,
            y = Country))+
   geom_boxplot(fill = "grey")+
   geom_textvline(label = " ", 
@@ -1979,19 +1988,19 @@ mp43
 
 ## Three regression models predicting IG fusion/identification and OG bonds:
 
-lm01 <- lm(Ingroup_fusion~event_positive_affect+event_negative_affect+event_episodic_recall+
-             event_shared_perception+event_reflection+event_transformative_indiv+
-             event_transformative_group+Age+`Gender: `+`SES: `, 
+lm01 <- lm(Ingroup_fusion~Event_positive_affect+Event_negative_affect+Event_episodic_recall+
+             Event_shared_perception+Event_reflection+Event_transformative_indiv+
+             Event_transformative_group+Age+`Gender: `+`SES: `, 
            data = ds)
 
-lm02 <- lm(Ingroup_identification~event_positive_affect+event_negative_affect+event_episodic_recall+
-             event_shared_perception+event_reflection+event_transformative_indiv+
-             event_transformative_group+Age+`Gender: `+`SES: `, 
+lm02 <- lm(Ingroup_identification~Event_positive_affect+Event_negative_affect+Event_episodic_recall+
+             Event_shared_perception+Event_reflection+Event_transformative_indiv+
+             Event_transformative_group+Age+`Gender: `+`SES: `, 
            data = ds)
 
-lm03 <- lm(Outgroup_bonds~event_positive_affect+event_negative_affect+event_episodic_recall+
-             event_shared_perception+event_reflection+event_transformative_indiv+
-             event_transformative_group+Age+`Gender: `+`SES: `, 
+lm03 <- lm(Outgroup_bonds~Event_positive_affect+Event_negative_affect+Event_episodic_recall+
+             Event_shared_perception+Event_reflection+Event_transformative_indiv+
+             Event_transformative_group+Age+`Gender: `+`SES: `, 
            data = ds)
 
 ```
@@ -2014,64 +2023,64 @@ stargazer(lm01, lm02, lm03,
 
 ## Twelve regression models predicting endorsement of BBL vs BCL for four countries
 
-lm_gmb_01 <- lm(Ingroup_fusion~event_positive_affect+event_negative_affect+event_episodic_recall+
-             event_shared_perception+event_reflection+event_transformative_indiv+
-             event_transformative_group+Age+`Gender: `+`SES: `, 
+lm_gmb_01 <- lm(Ingroup_fusion~Event_positive_affect+Event_negative_affect+Event_episodic_recall+
+             Event_shared_perception+Event_reflection+Event_transformative_indiv+
+             Event_transformative_group+Age+`Gender: `+`SES: `, 
              data = dsgmb)
 
-lm_gmb_02 <- lm(Ingroup_identification~event_positive_affect+event_negative_affect+event_episodic_recall+
-             event_shared_perception+event_reflection+event_transformative_indiv+
-             event_transformative_group+Age+`Gender: `+`SES: `, 
+lm_gmb_02 <- lm(Ingroup_identification~Event_positive_affect+Event_negative_affect+Event_episodic_recall+
+             Event_shared_perception+Event_reflection+Event_transformative_indiv+
+             Event_transformative_group+Age+`Gender: `+`SES: `, 
              data = dsgmb)
 
-lm_gmb_03 <- lm(Outgroup_bonds~event_positive_affect+event_negative_affect+event_episodic_recall+
-             event_shared_perception+event_reflection+event_transformative_indiv+
-             event_transformative_group+Age+`Gender: `+`SES: `, 
+lm_gmb_03 <- lm(Outgroup_bonds~Event_positive_affect+Event_negative_affect+Event_episodic_recall+
+             Event_shared_perception+Event_reflection+Event_transformative_indiv+
+             Event_transformative_group+Age+`Gender: `+`SES: `, 
              data = dsgmb)
 
-lm_pak_01 <- lm(Ingroup_fusion~event_positive_affect+event_negative_affect+event_episodic_recall+
-             event_shared_perception+event_reflection+event_transformative_indiv+
-             event_transformative_group+Age+`Gender: `+`SES: `, 
+lm_pak_01 <- lm(Ingroup_fusion~Event_positive_affect+Event_negative_affect+Event_episodic_recall+
+             Event_shared_perception+Event_reflection+Event_transformative_indiv+
+             Event_transformative_group+Age+`Gender: `+`SES: `, 
              data = dspak)
 
-lm_pak_02 <- lm(Ingroup_identification~event_positive_affect+event_negative_affect+event_episodic_recall+
-             event_shared_perception+event_reflection+event_transformative_indiv+
-             event_transformative_group+Age+`Gender: `+`SES: `, 
+lm_pak_02 <- lm(Ingroup_identification~Event_positive_affect+Event_negative_affect+Event_episodic_recall+
+             Event_shared_perception+Event_reflection+Event_transformative_indiv+
+             Event_transformative_group+Age+`Gender: `+`SES: `, 
              data = dspak)
 
-lm_pak_03 <- lm(Outgroup_bonds~event_positive_affect+event_negative_affect+event_episodic_recall+
-             event_shared_perception+event_reflection+event_transformative_indiv+
-             event_transformative_group+Age+`Gender: `+`SES: `, 
+lm_pak_03 <- lm(Outgroup_bonds~Event_positive_affect+Event_negative_affect+Event_episodic_recall+
+             Event_shared_perception+Event_reflection+Event_transformative_indiv+
+             Event_transformative_group+Age+`Gender: `+`SES: `, 
              data = dspak)
 
-lm_tza_01 <- lm(Ingroup_fusion~event_positive_affect+event_negative_affect+event_episodic_recall+
-             event_shared_perception+event_reflection+event_transformative_indiv+
-             event_transformative_group+Age+`Gender: `+`SES: `, 
+lm_tza_01 <- lm(Ingroup_fusion~Event_positive_affect+Event_negative_affect+Event_episodic_recall+
+             Event_shared_perception+Event_reflection+Event_transformative_indiv+
+             Event_transformative_group+Age+`Gender: `+`SES: `, 
              data = dstza)
 
-lm_tza_02 <- lm(Ingroup_identification~event_positive_affect+event_negative_affect+event_episodic_recall+
-             event_shared_perception+event_reflection+event_transformative_indiv+
-             event_transformative_group+Age+`Gender: `+`SES: `, 
+lm_tza_02 <- lm(Ingroup_identification~Event_positive_affect+Event_negative_affect+Event_episodic_recall+
+             Event_shared_perception+Event_reflection+Event_transformative_indiv+
+             Event_transformative_group+Age+`Gender: `+`SES: `, 
              data = dstza)
 
-lm_tza_03 <- lm(Outgroup_bonds~event_positive_affect+event_negative_affect+event_episodic_recall+
-             event_shared_perception+event_reflection+event_transformative_indiv+
-             event_transformative_group+Age+`Gender: `+`SES: `, 
+lm_tza_03 <- lm(Outgroup_bonds~Event_positive_affect+Event_negative_affect+Event_episodic_recall+
+             Event_shared_perception+Event_reflection+Event_transformative_indiv+
+             Event_transformative_group+Age+`Gender: `+`SES: `, 
              data = dstza)
 
-lm_uga_01 <- lm(Ingroup_fusion~event_positive_affect+event_negative_affect+event_episodic_recall+
-             event_shared_perception+event_reflection+event_transformative_indiv+
-             event_transformative_group+Age+`Gender: `+`SES: `, 
+lm_uga_01 <- lm(Ingroup_fusion~Event_positive_affect+Event_negative_affect+Event_episodic_recall+
+             Event_shared_perception+Event_reflection+Event_transformative_indiv+
+             Event_transformative_group+Age+`Gender: `+`SES: `, 
              data = dsuga)
 
-lm_uga_02 <- lm(Ingroup_identification~event_positive_affect+event_negative_affect+event_episodic_recall+
-             event_shared_perception+event_reflection+event_transformative_indiv+
-             event_transformative_group+Age+`Gender: `+`SES: `, 
+lm_uga_02 <- lm(Ingroup_identification~Event_positive_affect+Event_negative_affect+Event_episodic_recall+
+             Event_shared_perception+Event_reflection+Event_transformative_indiv+
+             Event_transformative_group+Age+`Gender: `+`SES: `, 
              data = dsuga)
 
-lm_uga_03 <- lm(Outgroup_bonds~event_positive_affect+event_negative_affect+event_episodic_recall+
-             event_shared_perception+event_reflection+event_transformative_indiv+
-             event_transformative_group+Age+`Gender: `+`SES: `, 
+lm_uga_03 <- lm(Outgroup_bonds~Event_positive_affect+Event_negative_affect+Event_episodic_recall+
+             Event_shared_perception+Event_reflection+Event_transformative_indiv+
+             Event_transformative_group+Age+`Gender: `+`SES: `, 
              data = dsuga)
 
 ```
