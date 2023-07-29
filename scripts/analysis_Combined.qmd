@@ -1331,7 +1331,7 @@ ggplot(aes(x = Event_imagistic,
 
 ```
 
-# **Section 3. OLS models: BBL/BCL vs group fusion/identification **
+# **Section 3. Regression models: BBL/BCL vs group fusion/identification **
 
 ```{r, error = F, message = F, warning = F}
 
@@ -1616,7 +1616,7 @@ mpuga
 
 ```
 
-# **Section 5. OLS models: Outgroup hostility/cooperation/fight vs group fusion/identification**
+# **Section 5. Regression models: Outgroup hostility/cooperation vs group fusion/identification**
 
 ## Regression models: full sample
 
@@ -1982,8 +1982,7 @@ mp43
 
 ```
 
-# **Section 7. OLS models: Group fusion/identification vs imagistic items**
-
+# **Section 7. Regression models: Group fusion/identification vs imagistic items**
 
 ## Regression models: full sample
 
