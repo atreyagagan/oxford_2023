@@ -1,8 +1,10 @@
 
+Table of results. Click on each link to go to the results webpage (make sure to open the links in a new window/tab). 
+
  <table>
   <tr>
     <th> N </th>
-    <th> Open links in new window: </th>
+    <th> Results: </th>
     </tr>
   <tr>
     <td> 1 </td>
