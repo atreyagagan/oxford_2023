@@ -23,7 +23,7 @@
   </tr>
   <tr>
   <td> 5 </td>
-  <td> <a href="https://rpubs.com/atreyagaganumn/oxf23uganda" target="blank" </href> Uganda community data </td>
+  <td> <a href="https://gaganatreya.quarto.pub/oxf23gambia/" target="blank" </href> Uganda community data </td>
   </tr>
     <tr>
   <td> 6 </td>
