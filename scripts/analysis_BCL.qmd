@@ -40,6 +40,15 @@ ds <- as.data.table(ds)
 ## Remove cases with no country:
 ds <- ds[!is.na(ds$Country),]
 
+ds$CountryID <- ifelse(ds$Country == "Bangladesh", "01",
+                ifelse(ds$Country == "Ghana", "02",
+                ifelse(ds$Country == "Malawi", "03",
+                ifelse(ds$Country == "Pakistan", "04",
+                ifelse(ds$Country == "Sierra Leone", "05",
+                ifelse(ds$Country == "Tanzania", "06",
+                ifelse(ds$Country == "Uganda", "07",
+                ifelse(ds$Country == "USA", "08", NA))))))))
+
 ```
 
 # **Section 1: Data Cleaning and Exploratory Data Visualization**
@@ -2084,3 +2093,8 @@ stargazer(lm01, lm02,
 htmltools::includeHTML("table1.html")
 ```
 
+```{r}
+## Save the latest version of data:
+# fwrite(ds, file = "~/Desktop/oxford/data/BCL/BCL01.csv")
+
+```
