@@ -1,8 +1,0 @@
-- source: analysis_Combined.qmd
-  quarto-pub:
-    - id: 6e73755d-54e0-4662-89b6-45b0654a2855
-      url: 'https://quartopub.com/sites/gaganatreya/data-analysis-and-visualization-br-community-data-combined-report'
-- source: analysis_Uganda.qmd
-  quarto-pub:
-    - id: ace44afb-9fe7-422e-89b3-486bfb961336
-      url: 'https://quartopub.com/sites/gaganatreya/data-analysis-and-visualization-br-uganda-community-data'
