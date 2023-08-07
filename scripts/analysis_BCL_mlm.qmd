@@ -42,9 +42,11 @@ ds <- as.data.table(ds)
 ds$Empathic_concern <- ds$empathic_concern
 ds$Perspective_taking <- ds$perspective_taking
 
+df01 <- ds %>% drop_na(Endorse_BCL, Endorse_BBL, Country)
+
 ```
 
-# **Section 1. Multi-level modeling: Endorse_BCL**
+# **Section 1. Outcome: Endorsement of BCL**
 
 ***Note: *** Read pg. 259 of Gelman \& Hill (2016) for reference. Also read [this online guide](https://quantdev.ssri.psu.edu/tutorials/r-bootcamp-introduction-multilevel-model-and-interactions){target="blank"} for reference. 
 
@@ -103,15 +105,15 @@ htmltools::includeHTML("table1.html")
 ## Histogram: Endorsement of BCL
 
 ```{r, error = F, message = F, warning = F}
+summary(df01$Endorse_BCL)
 
-summary(ds$Endorse_BCL)
-
-ggplot(data = ds, 
+ggplot(data = df01, 
        aes(x = Endorse_BCL)) +
   geom_histogram(color = "black",
                  bins = 20)+
-  geom_textvline(label = "Mean = 5.00", 
-                 xintercept = 5.00, 
+  xlim(1, 7)+
+  geom_textvline(label = "Mean = 4.70", 
+                 xintercept = 4.70, 
                  vjust = 1.1, 
                  lwd = 1.05, 
                  linetype = 2)+
@@ -121,10 +123,11 @@ ggplot(data = ds,
   theme_bw()
 
 
-ggplot(data = ds, 
+ggplot(data = df01, 
        aes(x = Endorse_BCL)) +
   geom_histogram(color = "black",
-                 bins = 20) +
+                 bins = 20)+
+  xlim(1, 7)+
   labs(y = "Frequency",
        x = "Endorse_BCL score", 
        title = "Endorse_BCL")+
@@ -132,13 +135,22 @@ ggplot(data = ds,
   theme_bw()
 
 
-ggplot(data = ds, 
+tbl01 <- aggregate(df01$Endorse_BCL, 
+                    by=list(df01$Country),
+                    FUN=mean)
+tbl01$Country <- tbl01$Group.1
+tbl01$Endorse_BCL <- tbl01$x
+tbl01 <- tbl01[, 3:4]
+tbl01
+
+ggplot(data = df01, 
        aes(x = Endorse_BCL, 
            y = Country)) +
   geom_boxplot(color = "black",
                fill = "grey")+
-  geom_textvline(label = "Mean = 5.00", 
-                 xintercept = 5.00, 
+  xlim(1, 7)+
+  geom_textvline(label = "Mean = 4.70", 
+                 xintercept = 4.70, 
                  vjust = 1.1, 
                  lwd = 1.05, 
                  linetype = 2)+
@@ -156,7 +168,9 @@ ggplot(data = ds,
 ggplot(data = ds, 
        aes(y = Endorse_BCL,
            x = IG_Fusion)) +
-  geom_point() +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
   stat_smooth(method="lm", 
               fullrange=TRUE) +
   labs(x = "IG_Fusion score",
@@ -173,7 +187,9 @@ ggplot(data = ds,
 
 ggplot(data = ds, 
        aes(y = Endorse_BCL,
-           x = IG_Identification)) +
+           x = IG_Identification))+
+  xlim(1, 7)+
+  ylim(1, 7)+
   geom_point() +
   stat_smooth(method="lm", 
               fullrange=TRUE) +
@@ -192,7 +208,9 @@ ggplot(data = ds,
 ggplot(data = ds, 
        aes(y = Endorse_BCL,
            x = OG_Bonds)) +
-  geom_point() +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
   stat_smooth(method="lm", 
               fullrange=TRUE) +
   labs(x = "OG_Bonds score",
@@ -210,7 +228,9 @@ ggplot(data = ds,
 ggplot(data = ds, 
        aes(y = Endorse_BCL,
            x = Empathic_concern)) +
-  geom_point() +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
   stat_smooth(method="lm", 
               fullrange=TRUE) +
   labs(x = "Empathic_concern score",
@@ -229,7 +249,9 @@ ggplot(data = ds,
 ggplot(data = ds, 
        aes(y = Endorse_BCL,
            x = Perspective_taking)) +
-  geom_point() +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
   stat_smooth(method="lm", 
               fullrange=TRUE) +
   labs(x = "Perspective_taking score",
@@ -240,8 +262,7 @@ ggplot(data = ds,
 
 ```
 
-# **Section 2. Multi-level modeling: Endorse_BBL**
-
+# **Section 2. Outcome: Endorsement of BBL**
 
 ## Unconditional means model
 
@@ -297,14 +318,15 @@ htmltools::includeHTML("table1.html")
 
 ```{r, error = F, message = F, warning = F}
 
-summary(ds$Endorse_BBL)
+summary(df01$Endorse_BBL)
 
-ggplot(data = ds, 
+ggplot(data = df01, 
        aes(x = Endorse_BBL)) +
   geom_histogram(color = "black",
                  bins = 20)+
-  geom_textvline(label = "Mean = 5.00", 
-                 xintercept = 5.00, 
+  xlim(1, 7)+
+  geom_textvline(label = "Mean = 4.90", 
+                 xintercept = 4.90, 
                  vjust = 1.1, 
                  lwd = 1.05, 
                  linetype = 2)+
@@ -313,25 +335,34 @@ ggplot(data = ds,
        title = "Endorse_BBL")+
   theme_bw()
 
-
-ggplot(data = ds, 
+ggplot(data = df01, 
        aes(x = Endorse_BBL)) +
   geom_histogram(color = "black",
-                 bins = 20) +
+                 bins = 20)+
+  xlim(1, 7)+
   labs(y = "Frequency",
        x = "Endorse_BBL score", 
        title = "Endorse_BBL")+
   facet_wrap( ~ Country, nrow = 2) +
   theme_bw()
 
+tbl02 <- aggregate(df01$Endorse_BBL, 
+                    by=list(df01$Country),
+                    FUN=mean)
+tbl02$Country <- tbl02$Group.1
+tbl02$Endorse_BBL <- tbl02$x
+tbl02 <- tbl02[, 3:4]
+tbl02
 
-ggplot(data = ds, 
+
+ggplot(data = df01, 
        aes(x = Endorse_BBL, 
            y = Country)) +
   geom_boxplot(color = "black",
                fill = "grey")+
-  geom_textvline(label = "Mean = 5.00", 
-                 xintercept = 5.00, 
+  xlim(1, 7)+
+  geom_textvline(label = "Mean = 4.90", 
+                 xintercept = 4.90, 
                  vjust = 1.1, 
                  lwd = 1.05, 
                  linetype = 2)+
@@ -339,6 +370,7 @@ ggplot(data = ds,
        x = "Endorse_BBL score", 
        title = "Endorse_BBL")+
   theme_bw()
+
 
 ```
 
@@ -350,7 +382,9 @@ ggplot(data = ds,
 ggplot(data = ds, 
        aes(y = Endorse_BBL,
            x = IG_Fusion)) +
-  geom_point() +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
   stat_smooth(method="lm", 
               fullrange=TRUE) +
   labs(x = "IG_Fusion score",
@@ -368,7 +402,9 @@ ggplot(data = ds,
 ggplot(data = ds, 
        aes(y = Endorse_BBL,
            x = IG_Identification)) +
-  geom_point() +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
   stat_smooth(method="lm", 
               fullrange=TRUE) +
   labs(x = "IG_Identification score",
@@ -386,7 +422,9 @@ ggplot(data = ds,
 ggplot(data = ds, 
        aes(y = Endorse_BBL,
            x = OG_Bonds)) +
-  geom_point() +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
   stat_smooth(method="lm", 
               fullrange=TRUE) +
   labs(x = "OG_Bonds score",
@@ -404,9 +442,12 @@ ggplot(data = ds,
 ggplot(data = ds, 
        aes(y = Endorse_BBL,
            x = Empathic_concern)) +
-  geom_point() +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
   stat_smooth(method="lm", 
-              fullrange=TRUE) +
+              fullrange=TRUE)+
+  ylim(1, 7)+
   labs(x = "Empathic_concern score",
        y = "Endorse_BBL score", 
        title = "Endorse_BBL Vs Empathetic concern")+
@@ -422,7 +463,9 @@ ggplot(data = ds,
 
 ggplot(data = ds, 
        aes(y = Endorse_BBL,
-           x = Perspective_taking)) +
+           x = Perspective_taking))+
+  xlim(1, 7)+
+  ylim(1, 7)+
   geom_point() +
   stat_smooth(method="lm", 
               fullrange=TRUE) +
@@ -451,3 +494,15 @@ stargazer(m00, m01, m02, m03,
 htmltools::includeHTML("table1.html")
 
 ```
+
+# **Section 3. Remaining models**
+
+See section 18 of previous analyses.
+
+Outcomes: IG Fusion, IG Identification, OG Bonds
+
+IVs: Imagistic items plus covariates. 
+
+
+#### End of file ####
+
