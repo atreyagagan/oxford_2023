@@ -224,23 +224,23 @@ lollipop_chart(x = ses,
        title = "Socioeconomic status (full sample)")+
   theme_bw()
 
-ds %>% 
-  drop_na(ses) %>%
-  group_by(ses, Country) %>% 
-  summarise(count = n()) %>% 
-  ggplot(aes(ses, count)) + 
-  geom_segment(aes(x=ses, 
-                   xend=ses, 
-                   y=0, 
-                   yend=count))+ 
-  geom_point()+
-  labs(x = "", 
-       y = "Frequency", 
-       title = "Socioeconomic status by country")+
-    facet_wrap(vars(Country), nrow = 2)+
-  coord_flip()+
-  theme_bw()
-
+# ds %>% 
+#   drop_na(ses) %>%
+#   group_by(ses, Country) %>% 
+#   summarise(count = n()) %>% 
+#   ggplot(aes(ses, count)) + 
+#   geom_segment(aes(x=ses, 
+#                    xend=ses, 
+#                    y=0, 
+#                    yend=count))+ 
+#   geom_point()+
+#   labs(x = "", 
+#        y = "Frequency", 
+#        title = "Socioeconomic status by country")+
+#     facet_wrap(vars(Country), nrow = 2)+
+#   coord_flip()+
+#   theme_bw()
+# 
 
 ```
 
@@ -267,25 +267,23 @@ lollipop_chart(x = jobnature,
        title = "Nature of employment (full sample)")+
   theme_bw()
 
-ds %>% 
-  drop_na(jobnature) %>%
-  group_by(jobnature, Country) %>% 
-  summarise(count = n()) %>% 
-  ggplot(aes(jobnature, count)) + 
-  geom_segment(aes(x=jobnature, 
-                   xend=jobnature, 
-                   y=0, 
-                   yend=count))+ 
-  geom_point()+
-  labs(x = "", 
-       y = "Frequency", 
-       title = "Nature of employment by country")+
-    facet_wrap(vars(Country), nrow = 2)+
-  coord_flip()+
-  theme_bw()
-
-
-
+# ds %>% 
+#   drop_na(jobnature) %>%
+#   group_by(jobnature, Country) %>% 
+#   summarise(count = n()) %>% 
+#   ggplot(aes(jobnature, count)) + 
+#   geom_segment(aes(x=jobnature, 
+#                    xend=jobnature, 
+#                    y=0, 
+#                    yend=count))+ 
+#   geom_point()+
+#   labs(x = "", 
+#        y = "Frequency", 
+#        title = "Nature of employment by country")+
+#     facet_wrap(vars(Country), nrow = 2)+
+#   coord_flip()+
+#   theme_bw()
+# 
 
 ```
 
@@ -312,22 +310,22 @@ lollipop_chart(x = religion,
 
 lp05
 
-ds %>% 
-  drop_na(religion) %>%
-  group_by(religion, Country) %>% 
-  summarise(count = n()) %>% 
-  ggplot(aes(religion, count)) + 
-  geom_segment(aes(x=religion, 
-                   xend=religion, 
-                   y=0, 
-                   yend=count))+ 
-  geom_point()+
-  labs(x = "", 
-       y = "Frequency", 
-       title = "Religious distribution by country")+
-    facet_wrap(vars(Country), nrow = 2)+
-  coord_flip()+
-  theme_bw()
+# ds %>% 
+#  drop_na(religion) %>%
+#  group_by(religion, Country) %>% 
+#  summarise(count = n()) %>% 
+#  ggplot(aes(religion, count)) + 
+#  geom_segment(aes(x=religion, 
+#                   xend=religion, 
+#                   y=0, 
+#                   yend=count))+ 
+#  geom_point()+
+#  labs(x = "", 
+#       y = "Frequency", 
+#       title = "Religious distribution by country")+
+#    facet_wrap(vars(Country), nrow = 2)+
+#  coord_flip()+
+#  theme_bw()
 
 
 ```
@@ -343,35 +341,35 @@ table(ds$married)
 
 ## Marital status (full sample):
 
-ds %>% 
-  drop_na(married) %>%
-  group_by(married) %>% 
-  summarise(count = n()) %>% 
-  ggplot(aes(married, count)) + 
-  geom_segment(aes(x=married, xend=married, 
-                   y=0, yend=count))+ 
-  geom_point()+
-  labs(x = "", 
-       y = "Frequency", 
-       title = "Marital status (full sample)")+
-  coord_flip()+
-  theme_bw()
+# ds %>% 
+#   drop_na(married) %>%
+#   group_by(married) %>% 
+#   summarise(count = n()) %>% 
+#   ggplot(aes(married, count)) + 
+#   geom_segment(aes(x=married, xend=married, 
+#                    y=0, yend=count))+ 
+#   geom_point()+
+#   labs(x = "", 
+#        y = "Frequency", 
+#        title = "Marital status (full sample)")+
+#   coord_flip()+
+#   theme_bw()
 
 ## Marital status by country:
-ds %>% 
-  drop_na(married) %>%
-  group_by(married, Country) %>% 
-  summarise(count = n()) %>% 
-  ggplot(aes(married, count)) + 
-  geom_segment(aes(x=married, xend=married, 
-                   y=0, yend=count))+ 
-  geom_point()+
-  labs(x = "", 
-       y = "Frequency", 
-       title = "Marital status by country")+
-    facet_wrap(vars(Country), nrow = 2)+
-  coord_flip()+
-  theme_bw()
+# ds %>% 
+#   drop_na(married) %>%
+#   group_by(married, Country) %>% 
+#   summarise(count = n()) %>% 
+#   ggplot(aes(married, count)) + 
+#   geom_segment(aes(x=married, xend=married, 
+#                    y=0, yend=count))+ 
+#   geom_point()+
+#   labs(x = "", 
+#        y = "Frequency", 
+#        title = "Marital status by country")+
+#     facet_wrap(vars(Country), nrow = 2)+
+#   coord_flip()+
+#   theme_bw()
 
 ```
 
@@ -2357,6 +2355,9 @@ mp41
 mp42
 
 mp43
+
+## write file to hard drive:
+#fwrite(ds, file = "~/Desktop/oxford/data/cleanedds/combinedds.csv")
 
 ```
 
