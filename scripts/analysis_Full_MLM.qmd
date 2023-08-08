@@ -34,7 +34,8 @@ pacman::p_load(data.table, tidyverse, haven, labelled, vtable,
                stargazer, ggthemes, ggcharts, geomtextpath,
                corrplot, tm, gt, lme4, car, lmerTest, 
                ggeffects, magrittr, broom, broom.mixed,
-               backports, effects, interactions, plyr, sjPlot)
+               backports, effects, interactions, plyr, sjPlot,
+               modelsummary, patchwork)
 
 ## Import latest BCL (8 countries) dataset:
 ds01 <- fread("~/Desktop/oxford/data/BCL/BCL02.csv")
@@ -2415,6 +2416,207 @@ htmltools::includeHTML("table1.html")
 
 ```
 
+
+# **Section 8. Coefficient plots**
+
+```{r, error = F, message = F, warning = F}
+
+bg <- list(geom_point(aes(y = term, x = estimate),
+                      alpha = .25, size = 15, color = 'red'))
+
+```
+
+## Outcome: Endorsement of BCL
+
+```{r, error = F, message = F, warning = F}
+
+mp01 <- modelplot(m01,
+                  coef_omit = 'SD (Observations)',
+                  coef_rename = TRUE) +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue", "black"))+
+#  xlim(-3, 3)+
+  labs(title = "Endorsement of BCL", 
+       x = "Coefficient estimates with 95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+mp01
+
+cfp01 <- modelplot(m01,
+                   coef_omit = 'SD (Observations)',
+                   coef_rename = TRUE, 
+                   background = bg)+
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant"))+
+  scale_color_manual(values = c("red", "blue"))+
+  #  xlim(-3, 3)+
+  labs(title = "Endorsement of BCL", 
+       x = "Coefficient estimates with95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+cfp01
+
+```
+
+## Outcome: Endorsement of BBL
+
+```{r, error = F, message = F, warning = F}
+
+mp03 <- modelplot(m03,
+                  coef_omit = 'SD (Observations)',
+                  coef_rename = TRUE) +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue", "black"))+
+#  xlim(-3, 3)+
+  labs(title = "Endorsement of BBL", 
+       x = "Coefficient estimates with95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+
+mp03
+
+cfp03 <- modelplot(m03,
+                   coef_omit = 'SD (Observations)',
+                   coef_rename = TRUE, 
+                   background = bg)+
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant"))+
+  scale_color_manual(values = c("red", "blue"))+
+  #  xlim(-3, 3)+
+  labs(title = "Endorsement of BBL", 
+       x = "Coefficient estimates with95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+cfp03
+
+```
+
+
+## Combined: Endorsement of BCL \& BBL
+
+```{r, error = F, message = F, warning = F}
+
+mp01a <- mp01 + theme(legend.position = "none")
+
+ol1 <- mp01a / mp03
+
+ol1
+
+```
+
+
+## Outcome: Ingroup fusion
+
+```{r, error = F, message = F, warning = F}
+
+mp05 <- modelplot(m05,
+                  coef_omit = 'SD (Observations)',
+                  coef_rename = TRUE) +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue", "black"))+
+#  xlim(-3, 3)+
+  labs(title = "Ingroup fusion", 
+       x = "Coefficient estimates with95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+mp05
+
+cfp05 <- modelplot(m05,
+                   coef_omit = 'SD (Observations)',
+                   coef_rename = TRUE, 
+                   background = bg)+
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant"))+
+  scale_color_manual(values = c("red", "blue"))+
+  #  xlim(-3, 3)+
+  labs(title = "Ingroup fusion", 
+       x = "Coefficient estimates with95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+cfp05
+
+```
+
+## Outcome: Ingroup identification
+
+```{r, error = F, message = F, warning = F}
+
+mp07 <- modelplot(m07,
+                  coef_omit = 'SD (Observations)',
+                  coef_rename = TRUE) +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue", "black"))+
+#  xlim(-3, 3)+
+  labs(title = "Ingroup identification", 
+       x = "Coefficient estimates with95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+
+mp07
+
+cfp07 <- modelplot(m03,
+                   coef_omit = 'SD (Observations)',
+                   coef_rename = TRUE, 
+                   background = bg)+
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant"))+
+  scale_color_manual(values = c("red", "blue"))+
+  #  xlim(-3, 3)+
+  labs(title = "Ingroup identification", 
+       x = "Coefficient estimates with95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+cfp07
+
+```
+
+## Combined: Ingroup Fusion \& Identification
+
+```{r, error = F, message = F, warning = F}
+
+mp05a <- mp05 + theme(legend.position = "none")
+ol2 <- mp05a / mp07
+ol2
+```
+
+## Outcome: Outcome bonds
+
+```{r, error = F, message = F, warning = F}
+
+mp09 <- modelplot(m09,
+                  coef_omit = 'SD (Observations)',
+                  coef_rename = TRUE) +
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant")) +
+  scale_color_manual(values = c("red", "blue", "black"))+
+#  xlim(-3, 3)+
+  labs(title = "Outgroup bonds", 
+       x = "Coefficient estimates with95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+mp09
+
+
+cfp09 <- modelplot(m09,
+                   coef_omit = 'SD (Observations)',
+                   coef_rename = TRUE, 
+                   background = bg)+
+  aes(color = ifelse(p.value < 0.05, "Significant", "Not significant"))+
+  scale_color_manual(values = c("red", "blue"))+
+  #  xlim(-3, 3)+
+  labs(title = "Outgroup bonds", 
+       x = "Coefficient estimates with95% CI")+
+  geom_vline(xintercept = 0, 
+             linetype = 2)
+
+cfp09
+
+```
+
 # **To Do**
 
 - Some countries/datasets have more variables than others. This makes it difficult to estimate all explanatory variables of interest (eg - perceived discrimination, negative/positive contact/etc)
@@ -2424,5 +2626,3 @@ htmltools::includeHTML("table1.html")
 - Other DV/IV combinations
 
 - Other comments/suggestions?
-
-
