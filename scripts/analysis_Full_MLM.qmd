@@ -1,5 +1,5 @@
 ---
-title: "Full Dataset (8 cross-country data + 4 individual countries) <br> Multi-level Modeling"
+title: "Full Dataset (8 + 4 Countries) <br> Multi-level Modeling"
 author: Gagan Atreya
 date: today
 format:
@@ -233,7 +233,7 @@ tab_model(m00)
 
 We can see that ICC = 0.07. Lower ICC = low variance explained across groups. In this case, most of the variability is at individual-level (not group level). There is very little differing patterns between countries. 
 
-## Random intercept models
+## Random intercept model
 
 Also called "varying intercept model with individual-level predictors" (Gelman and Hill, 2016, Chapter 12).
 
@@ -251,7 +251,7 @@ tab_model(m01)
 
 ```
 
-Here, marginal R sq is much higher compared to previous model. Adding individual-level predictors significantly increases explanatory power of the model. Again, evidence that most of the variation is at individual-level differences. 
+Here, marginal R^2^ is much higher compared to previous model. Adding individual-level predictors significantly increases explanatory power of the model. Again, evidence that most of the variation is at individual-level differences. 
 
 
 ```{r, error = F, message = F, warning = F, results = "hide"}
@@ -286,8 +286,8 @@ ggplot(data = df01,
   geom_histogram(color = "black",
                  bins = 20)+
   xlim(1, 7)+
-  geom_textvline(label = "Mean = 5.00", 
-                 xintercept = 5.00, 
+  geom_textvline(label = "Mean = 5.10", 
+                 xintercept = 5.10, 
                  vjust = 1.1, 
                  lwd = 1.05, 
                  linetype = 2)+
@@ -323,8 +323,8 @@ ggplot(data = df01,
   geom_boxplot(color = "black",
                fill = "grey")+
   xlim(1, 7)+
-  geom_textvline(label = "Mean = 5.00", 
-                 xintercept = 5.00, 
+  geom_textvline(label = "Mean = 5.10", 
+                 xintercept = 5.10, 
                  vjust = 1.1, 
                  lwd = 1.05, 
                  linetype = 2)+
@@ -605,7 +605,7 @@ tab_model(m02)
 ```
 
 
-## Random intercept models
+## Random intercept model
 
 ```{r, error = F, message = F, warning = F}
 
@@ -653,8 +653,8 @@ ggplot(data = df01,
   geom_histogram(color = "black",
                  bins = 20)+
   xlim(1, 7)+
-  geom_textvline(label = "Mean = 5.00", 
-                 xintercept = 5.00, 
+  geom_textvline(label = "Mean = 4.70", 
+                 xintercept = 4.70, 
                  vjust = 1.1, 
                  lwd = 1.05, 
                  linetype = 2)+
@@ -689,8 +689,8 @@ ggplot(data = df01,
   geom_boxplot(color = "black",
                fill = "grey")+
   xlim(1, 7)+
-  geom_textvline(label = "Mean = 5.00", 
-                 xintercept = 5.00, 
+  geom_textvline(label = "Mean = 4.70", 
+                 xintercept = 4.70, 
                  vjust = 1.1, 
                  lwd = 1.05, 
                  linetype = 2)+
