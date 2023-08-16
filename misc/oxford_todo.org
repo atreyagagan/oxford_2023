@@ -1,0 +1,18 @@
+-*- mode: org -*-
+
+* Meeting Agenda: August 15 2023: [3/9]
+
+    1. [X] Learn about new modeling tehnique
+           Read EJSP paper for reference. No need to do it now.
+    2. [X] Two papers - community (BCL) data, and 8-country data
+    3. [ ] Additional DVs: Perceptions of discrimination, Religious freedom measures
+    4. [ ] New models:
+           DVs: Social perception of religious freedom, experience of religious freedom (actually called the religious discrimination scale)
+           IVs: IG fusion, identification, OG bonds, empathic concern, perspective taking, perceived history of discrimination, Endorse_BCL, Endorse_BBL, positive contact with outgroup, negative contact with outgroup, age, gender, marital status, wealth_level
+           IVs: Imagistic variables plus covariates (demographic controls)
+    5. [ ] Writing up the paper:
+           Needs to be two papers. One for 8 country dataset. Follow up study for 4 country dataset.
+    6. [ ] Next meeting: Saturday Japan time at 1 pm. Friday 9 pm LA time.
+    7. [X] Ultimate deadline for paper: September
+    8. [ ] Begin writing papers in dropbox / shared google doc
+    9. [ ]
