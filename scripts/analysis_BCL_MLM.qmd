@@ -71,7 +71,7 @@ Residual = 3.0734. Variance explained by level 1 residuals (everything that's no
 
 ```{r, error = F, message = F, warning = F}
 
-tab_model(m00)
+##tab_model(m00)
 
 ```
 
@@ -91,7 +91,7 @@ m01 <- lmer(Endorse_BCL~IG_Fusion+IG_Identification+OG_Bonds+Empathic_concern+
             data = ds)
 
 summary(m01)
-tab_model(m01)
+#tab_model(m01)
 
 ```
 
@@ -444,7 +444,7 @@ m02<- lmer(Endorse_BBL ~ 1 + (1 | Country),
            data = ds)
 
 summary(m02)
-tab_model(m02)
+#tab_model(m02)
 
 ```
 
@@ -461,7 +461,7 @@ m03 <- lmer(Endorse_BBL~IG_Fusion+IG_Identification+OG_Bonds+Empathic_concern+
             data = ds)
 
 summary(m03)
-tab_model(m03)
+#tab_model(m03)
 
 ```
 
@@ -831,7 +831,7 @@ m04 <- lmer(IG_Fusion ~ 1 + (1 | Country),
             data = ds)
 
 summary(m04)
-tab_model(m04)
+#tab_model(m04)
 
 ```
 
@@ -849,7 +849,7 @@ m05 <- lmer(IG_Fusion~event_positive_affect+event_negative_affect+
               (1 | Country), data = ds)
 
 summary(m05)
-tab_model(m05)
+#tab_model(m05)
 
 ```
 
@@ -1301,7 +1301,7 @@ m06 <- lmer(IG_Identification ~ 1 + (1 | Country),
             data = ds)
 
 summary(m06)
-tab_model(m06)
+#tab_model(m06)
 
 ```
 
@@ -1319,7 +1319,7 @@ m07 <- lmer(IG_Identification~event_positive_affect+event_negative_affect+
               (1 | Country), data = ds)
 
 summary(m07)
-tab_model(m07)
+#tab_model(m07)
 
 ```
 
@@ -1776,7 +1776,7 @@ m08 <- lmer(OG_Bonds ~ 1 + (1 | Country),
             data = ds)
 
 summary(m08)
-tab_model(m08)
+#tab_model(m08)
 
 ```
 
@@ -1794,7 +1794,7 @@ m09 <- lmer(OG_Bonds~event_positive_affect+event_negative_affect+
               (1 | Country), data = ds)
 
 summary(m09)
-tab_model(m09)
+#tab_model(m09)
 
 ```
 

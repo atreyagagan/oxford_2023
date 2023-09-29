@@ -3,9 +3,9 @@ title:
 username:
 account: rpubs
 server: rpubs.com
-hostUrl: rpubs.com
+envVars: rpubs.com
+hostUrl: https://api.rpubs.com/api/v1/document/1054584/8662a03d3384404c8baa58d8f8930e7c
 appId: https://api.rpubs.com/api/v1/document/1054584/8662a03d3384404c8baa58d8f8930e7c
-bundleId: https://api.rpubs.com/api/v1/document/1054584/8662a03d3384404c8baa58d8f8930e7c
-url: http://rpubs.com/atreyagaganumn/1054584
-when: 1690568550.7424
-lastSyncTime: 1690568550.74241
+bundleId: http://rpubs.com/atreyagaganumn/1054584
+url: 1695357096.09269
+version: 1

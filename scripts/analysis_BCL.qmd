@@ -40,14 +40,18 @@ ds <- as.data.table(ds)
 ## Remove cases with no country:
 ds <- ds[!is.na(ds$Country),]
 
+ds$Country <- as.character(haven::as_factor(ds$Country))
+
+ds <- ds[!(ds$Country == "USA"), ]
+table(ds$Country)
+
 ds$CountryID <- ifelse(ds$Country == "Bangladesh", "01",
                 ifelse(ds$Country == "Ghana", "02",
                 ifelse(ds$Country == "Malawi", "03",
                 ifelse(ds$Country == "Pakistan", "04",
                 ifelse(ds$Country == "Sierra Leone", "05",
                 ifelse(ds$Country == "Tanzania", "06",
-                ifelse(ds$Country == "Uganda", "07",
-                ifelse(ds$Country == "USA", "08", NA))))))))
+                ifelse(ds$Country == "Uganda", "07", NA)))))))
 
 ```
 
@@ -56,8 +60,6 @@ ds$CountryID <- ifelse(ds$Country == "Bangladesh", "01",
 ## Variable: Country / Language
 
 ```{r, error = F, message = F, warning = F}
-
-ds$Country <- as.character(haven::as_factor(ds$Country))
 
 tbl01 <- table(ds$Country, ds$UserLanguage)
 tbl02 <- addmargins(tbl01, c(1, 2))
@@ -640,7 +642,7 @@ The test is significant, again suggesting that factor analysis is appropriate.
 ## Parallel test
 
 ```{r, warning=F, message=F}
-parallel <- fa.parallel(bonds)
+# # parallel <- fa.parallel(bonds)
 
 ```
 
@@ -697,7 +699,7 @@ corrplot(mtx1, method = "number", number.cex = 0.7,
          col=c("white", "darkred", "red",
                "darkgrey", "blue", "darkblue"))
 
-parallel <- fa.parallel(bonds)
+# # parallel <- fa.parallel(bonds)
 
 ```
 
@@ -941,7 +943,7 @@ cortest.bartlett(leadership)
 
 ```{r, error = F, message = F, warning = F}
 
-parallel <- fa.parallel(leadership)
+# # parallel <- fa.parallel(leadership)
 
 ```
 
@@ -1077,6 +1079,9 @@ ds$IG_Identification <- as.numeric((ds$IGI01+ds$IGI02+ds$IGI03)/3)
 ds$OG_Bonds <- as.numeric((ds$OGF01+ds$OGF02+ds$OGF03+
                              ds$OGI01+ds$OGI02+ds$OGI03)/6)
 
+
+summary(ds$Age)
+
 ```
 
 
@@ -1111,7 +1116,7 @@ stargazer(lm01, lm02,
 ```
 
 
-```{r}
+```{r, results='asis'}
 htmltools::includeHTML("table1.html")
 
 ```
@@ -1576,7 +1581,7 @@ KMO(r=cor(imagistic))
 cortest.bartlett(imagistic)
 
 ## Parallel test
-parallel <- fa.parallel(imagistic)
+# parallel <- fa.parallel(imagistic)
 
 ```
 
