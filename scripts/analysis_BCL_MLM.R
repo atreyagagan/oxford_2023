@@ -1,0 +1,2077 @@
+## ----error = F, message = F, warning = F----------------------------------------
+
+rm(list=ls())
+options(digits = 2)
+
+## Install "pacman" package if not installed
+# (remove the # symbol from the line below):
+# install.packages("pacman")
+
+## Load R packages:
+pacman::p_load(data.table, tidyverse, haven, labelled, vtable, 
+               psych, scales, weights, clipr, forcats,
+               stargazer, ggthemes, ggcharts, geomtextpath,
+               corrplot, tm, gt, lme4, car, lmerTest, 
+               ggeffects, magrittr, broom, broom.mixed,
+               backports, effects, interactions, plyr, sjPlot)
+
+## Import latest BCL dataset:
+ds <- fread("~/Desktop/oxford/data/BCL/BCL01.csv")
+ds <- as.data.table(ds)
+
+ds$Empathic_concern <- ds$empathic_concern
+ds$Perspective_taking <- ds$perspective_taking
+
+df01 <- ds %>% drop_na(Endorse_BCL, Endorse_BBL, Country)
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+## Varying intercept model with no predictors:
+m00<- lmer(Endorse_BCL ~ 1 + (1 | Country), 
+           data = ds)
+
+summary(m00)
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+##tab_model(m00)
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+## Varying intercept models with individual-level predictors:
+
+m01 <- lmer(Endorse_BCL~IG_Fusion+IG_Identification+OG_Bonds+Empathic_concern+
+              Perspective_taking+Age+Female+Married+Wealth_level+ 
+              (1 | Country), 
+            data = ds)
+
+summary(m01)
+#tab_model(m01)
+
+
+
+## ----error = F, message = F, warning = F, results = "hide"----------------------
+
+## Change class of all models so we can use stargazer():
+class(m00) <- "lmerMod"
+class(m01) <- "lmerMod"
+
+## Tabulated results:
+stargazer(m00, m01,
+          type = "html", 
+          star.cutoffs = c(0.05, 0.01, 0.001),
+          out = "table1.html")
+
+
+
+## -------------------------------------------------------------------------------
+
+htmltools::includeHTML("table1.html")
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+summary(df01$Endorse_BCL)
+
+ggplot(data = df01, 
+       aes(x = Endorse_BCL)) +
+  geom_histogram(color = "black",
+                 bins = 20)+
+  xlim(1, 7)+
+  geom_textvline(label = "Mean = 4.70", 
+                 xintercept = 4.70, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+
+  labs(y = "Frequency",
+       x = "Endorse_BCL score", 
+       title = "Endorse_BCL")+
+  theme_bw()
+
+
+ggplot(data = df01, 
+       aes(x = Endorse_BCL)) +
+  geom_histogram(color = "black",
+                 bins = 20)+
+  xlim(1, 7)+
+  labs(y = "Frequency",
+       x = "Endorse_BCL score", 
+       title = "Endorse_BCL")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+tbl01 <- aggregate(df01$Endorse_BCL, 
+                    by=list(df01$Country),
+                    FUN=mean)
+tbl01$Country <- tbl01$Group.1
+tbl01$Endorse_BCL <- tbl01$x
+tbl01 <- tbl01[, 3:4]
+tbl01
+
+ggplot(data = df01, 
+       aes(x = Endorse_BCL, 
+           y = Country)) +
+  geom_boxplot(color = "black",
+               fill = "grey")+
+  xlim(1, 7)+
+  geom_textvline(label = "Mean = 4.70", 
+                 xintercept = 4.70, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+
+  labs(y = "",
+       x = "Endorse_BCL score", 
+       title = "Endorse_BCL")+
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = Endorse_BCL,
+           x = IG_Fusion)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(x = "IG_Fusion score",
+       y = "Endorse_BCL score", 
+       title = "Endorse_BCL vs Ingroup fusion")+
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = Endorse_BCL,
+           x = IG_Fusion, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(x = "IG_Fusion score",
+       y = "Endorse_BCL score", 
+       title = "Endorse_BCL vs Ingroup fusion")+
+ scale_color_colorblind()+
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = Endorse_BCL,
+           x = IG_Fusion)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(x = "IG_Fusion score",
+       y = "Endorse_BCL score", 
+       title = "Endorse_BCL vs Ingroup fusion")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = Endorse_BCL,
+           x = IG_Identification))+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  geom_point() +
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(x = "IG_Identification score",
+       y = "Endorse_BCL score", 
+       title = "Endorse_BCL vs Ingroup identification")+
+#  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = Endorse_BCL,
+           x = IG_Identification, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(x = "IG_Identification score",
+       y = "Endorse_BCL score", 
+       title = "Endorse_BCL vs Ingroup identification")+
+ scale_color_colorblind()+
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = Endorse_BCL,
+           x = IG_Identification))+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  geom_point() +
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(x = "IG_Identification score",
+       y = "Endorse_BCL score", 
+       title = "Endorse_BCL vs Ingroup identification")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = Endorse_BCL,
+           x = OG_Bonds)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(x = "OG_Bonds score",
+       y = "Endorse_BCL score", 
+       title = "Endorse_BCL vs Outgroup bonds")+
+#  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = Endorse_BCL,
+           x = OG_Bonds, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(x = "OG_Bonds score",
+       y = "Endorse_BCL score", 
+       title = "Endorse_BCL vs Outgroup bonds")+
+ scale_color_colorblind()+
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = Endorse_BCL,
+           x = OG_Bonds)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(x = "OG_Bonds score",
+       y = "Endorse_BCL score", 
+       title = "Endorse_BCL vs Outgroup bonds")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = Endorse_BCL,
+           x = Empathic_concern)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(x = "Empathic_concern score",
+       y = "Endorse_BCL score", 
+       title = "Endorse_BCL vs Empathetic concern")+
+#  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = Endorse_BCL,
+           x = Empathic_concern, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(x = "Empathic_concern score",
+       y = "Endorse_BCL score", 
+       title = "Endorse_BCL vs Empathetic concern")+
+ scale_color_colorblind()+
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = Endorse_BCL,
+           x = Empathic_concern)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(x = "Empathic_concern score",
+       y = "Endorse_BCL score", 
+       title = "Endorse_BCL vs Empathetic concern")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = Endorse_BCL,
+           x = Perspective_taking)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(x = "Perspective_taking score",
+       y = "Endorse_BCL score", 
+       title = "Endorse_BCL vs Perspective taking")+
+#  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = Endorse_BCL,
+           x = Perspective_taking, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(x = "Perspective_taking score",
+       y = "Endorse_BCL score", 
+       title = "Endorse_BCL vs Perspective taking")+
+ scale_color_colorblind()+
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = Endorse_BCL,
+           x = Perspective_taking)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(x = "Perspective_taking score",
+       y = "Endorse_BCL score", 
+       title = "Endorse_BCL vs Perspective taking")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+## Varying intercept model with no predictors:
+
+m02<- lmer(Endorse_BBL ~ 1 + (1 | Country), 
+           data = ds)
+
+summary(m02)
+#tab_model(m02)
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+## Varying intercept models with individual-level predictors:
+
+m03 <- lmer(Endorse_BBL~IG_Fusion+IG_Identification+OG_Bonds+Empathic_concern+
+              Perspective_taking+Age+Female+Married+Wealth_level+ 
+              (1 | Country), 
+            data = ds)
+
+summary(m03)
+#tab_model(m03)
+
+
+
+## ----error = F, message = F, warning = F, results = "hide"----------------------
+
+## Change class of all models so we can use stargazer():
+class(m02) <- "lmerMod"
+class(m03) <- "lmerMod"
+
+## Tabulated results:
+stargazer(m02, m03,
+          type = "html", 
+          star.cutoffs = c(0.05, 0.01, 0.001),
+          out = "table1.html")
+
+
+
+## -------------------------------------------------------------------------------
+htmltools::includeHTML("table1.html")
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+summary(df01$Endorse_BBL)
+
+ggplot(data = df01, 
+       aes(x = Endorse_BBL)) +
+  geom_histogram(color = "black",
+                 bins = 20)+
+  xlim(1, 7)+
+  geom_textvline(label = "Mean = 4.90", 
+                 xintercept = 4.90, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+
+  labs(y = "Frequency",
+       x = "Endorse_BBL score", 
+       title = "Endorse_BBL")+
+  theme_bw()
+
+ggplot(data = df01, 
+       aes(x = Endorse_BBL)) +
+  geom_histogram(color = "black",
+                 bins = 20)+
+  xlim(1, 7)+
+  labs(y = "Frequency",
+       x = "Endorse_BBL score", 
+       title = "Endorse_BBL")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+tbl02 <- aggregate(df01$Endorse_BBL, 
+                    by=list(df01$Country),
+                    FUN=mean)
+tbl02$Country <- tbl02$Group.1
+tbl02$Endorse_BBL <- tbl02$x
+tbl02 <- tbl02[, 3:4]
+tbl02
+
+
+ggplot(data = df01, 
+       aes(x = Endorse_BBL, 
+           y = Country)) +
+  geom_boxplot(color = "black",
+               fill = "grey")+
+  xlim(1, 7)+
+  geom_textvline(label = "Mean = 4.90", 
+                 xintercept = 4.90, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+
+  labs(y = "",
+       x = "Endorse_BBL score", 
+       title = "Endorse_BBL")+
+  theme_bw()
+
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = Endorse_BBL,
+           x = IG_Fusion)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(x = "IG_Fusion score",
+       y = "Endorse_BBL score", 
+       title = "Endorse_BBL vs Ingroup fusion")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = Endorse_BBL,
+           x = IG_Fusion, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(x = "IG_Fusion score",
+       y = "Endorse_BBL score", 
+       title = "Endorse_BBL vs Ingroup fusion")+
+ scale_color_colorblind()+
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = Endorse_BBL,
+           x = IG_Fusion)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(x = "IG_Fusion score",
+       y = "Endorse_BBL score", 
+       title = "Endorse_BBL vs Ingroup fusion")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = Endorse_BBL,
+           x = IG_Identification)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(x = "IG_Identification score",
+       y = "Endorse_BBL score", 
+       title = "Endorse_BBL vs Ingroup identification")+
+#  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = Endorse_BBL,
+           x = IG_Identification, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(x = "IG_Identification score",
+       y = "Endorse_BBL score", 
+       title = "Endorse_BBL vs Ingroup identification")+
+ scale_color_colorblind()+
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = Endorse_BBL,
+           x = IG_Identification)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(x = "IG_Identification score",
+       y = "Endorse_BBL score", 
+       title = "Endorse_BBL vs Ingroup identification")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = Endorse_BBL,
+           x = OG_Bonds)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(x = "OG_Bonds score",
+       y = "Endorse_BBL score", 
+       title = "Endorse_BBL vs Outgroup bonds")+
+#  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = Endorse_BBL,
+           x = OG_Bonds, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(x = "OG_Bonds score",
+       y = "Endorse_BBL score", 
+       title = "Endorse_BBL vs Outgroup bonds")+
+ scale_color_colorblind()+
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = Endorse_BBL,
+           x = OG_Bonds)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(x = "OG_Bonds score",
+       y = "Endorse_BBL score", 
+       title = "Endorse_BBL vs Outgroup bonds")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = Endorse_BBL,
+           x = Empathic_concern)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE)+
+  ylim(1, 7)+
+  labs(x = "Empathic_concern score",
+       y = "Endorse_BBL score", 
+       title = "Endorse_BBL vs Empathetic concern")+
+#  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = Endorse_BBL,
+           x = Empathic_concern, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(x = "OG_Bonds score",
+       y = "Empathic_concern score", 
+       title = "Empathic_concern vs Empathic concern")+
+ scale_color_colorblind()+
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = Endorse_BBL,
+           x = Empathic_concern)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE)+
+  ylim(1, 7)+
+  labs(x = "Empathic_concern score",
+       y = "Endorse_BBL score", 
+       title = "Endorse_BBL vs Empathetic concern")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = Endorse_BBL,
+           x = Perspective_taking))+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  geom_point() +
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(x = "Perspective_taking score",
+       y = "Endorse_BBL score", 
+       title = "Endorse_BBL vs Perspective taking")+
+#    facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+
+ggplot(data = ds, 
+       aes(y = Endorse_BBL,
+           x = Perspective_taking, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(x = "Perspective_taking score",
+       y = "Empathic_concern score", 
+       title = "Empathic_concern vs Perspective taking")+
+ scale_color_colorblind()+
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = Endorse_BBL,
+           x = Perspective_taking))+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  geom_point() +
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(x = "Perspective_taking score",
+       y = "Endorse_BBL score", 
+       title = "Endorse_BBL vs Perspective taking")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F, results = "hide"----------------------
+## Tabulated results:
+stargazer(m00, m01, m02, m03,
+          type = "html", 
+          star.cutoffs = c(0.05, 0.01, 0.001),
+          out = "table1.html")
+
+
+
+## -------------------------------------------------------------------------------
+htmltools::includeHTML("table1.html")
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+## Varying intercept model with no predictors:
+
+m04 <- lmer(IG_Fusion ~ 1 + (1 | Country), 
+            data = ds)
+
+summary(m04)
+#tab_model(m04)
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+## Varying intercept models with individual-level predictors:
+
+m05 <- lmer(IG_Fusion~event_positive_affect+event_negative_affect+
+              event_episodic_recall+event_shared_perception+event_event_reflection+
+              event_transformative_indiv+event_transformative_group+Age+Female+
+              Married+Wealth_level+
+              (1 | Country), data = ds)
+
+summary(m05)
+#tab_model(m05)
+
+
+
+## ----error = F, message = F, warning = F, results = "hide"----------------------
+
+## Change class of all models so we can use stargazer():
+class(m04) <- "lmerMod"
+class(m05) <- "lmerMod"
+
+## Tabulated results:
+stargazer(m04, m05,
+          type = "html", 
+          star.cutoffs = c(0.05, 0.01, 0.001),
+          out = "table1.html")
+
+
+
+## -------------------------------------------------------------------------------
+htmltools::includeHTML("table1.html")
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+df01 <- ds %>% drop_na(IG_Fusion, IG_Identification)
+
+summary(df01$IG_Fusion)
+
+ggplot(data = df01, 
+       aes(x = IG_Fusion)) +
+  geom_histogram(color = "black",
+                 bins = 20)+
+  xlim(1, 7)+
+  geom_textvline(label = "Mean = 4.80", 
+                 xintercept = 4.80, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+
+  labs(y = "Frequency",
+       x = "IG_Fusion score", 
+       title = "IG_Fusion")+
+  theme_bw()
+
+ggplot(data = df01, 
+       aes(x = IG_Fusion)) +
+  geom_histogram(color = "black",
+                 bins = 20)+
+  xlim(1, 7)+
+  labs(y = "Frequency",
+       x = "IG_Fusion score", 
+       title = "IG_Fusion")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+tbl02 <- aggregate(df01$IG_Fusion, 
+                    by=list(df01$Country),
+                    FUN=mean)
+tbl02$Country <- tbl02$Group.1
+tbl02$IG_Fusion <- tbl02$x
+tbl02 <- tbl02[, 3:4]
+tbl02
+
+ggplot(data = df01, 
+       aes(x = IG_Fusion, 
+           y = Country)) +
+  geom_boxplot(color = "black",
+               fill = "grey")+
+  xlim(1, 7)+
+  geom_textvline(label = "Mean = 4.80", 
+                 xintercept = 4.80, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+
+  labs(y = "",
+       x = "IG_Fusion score", 
+       title = "IG_Fusion")+
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_positive_affect)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Fusion score",
+       x = "Event_positive_affect score", 
+       title = "IG_Fusion vs Event_positive_affect")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_positive_affect, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "IG_Fusion score",
+       x = "Event_positive_affect score", 
+       title = "IG_Fusion vs Event_positive_affect")+
+ scale_color_colorblind()+
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_positive_affect)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Fusion score",
+       x = "Event_positive_affect score", 
+       title = "IG_Fusion vs Event_positive_affect")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_negative_affect)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Fusion score",
+       x = "Event_negative_affect score", 
+       title = "IG_Fusion vs Event_negative_affect")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_negative_affect, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "IG_Fusion score",
+       x = "Event_negative_affect score", 
+       title = "IG_Fusion vs Event_negative_affect")+
+ scale_color_colorblind()+
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_negative_affect)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Fusion score",
+       x = "Event_negative_affect score", 
+       title = "IG_Fusion vs Event_negative_affect")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_episodic_recall)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Fusion score",
+       x = "Event_episodic_recall score", 
+       title = "IG_Fusion vs Event_episodic_recall")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_episodic_recall, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "IG_Fusion score",
+       x = "Event_episodic_recall score", 
+       title = "IG_Fusion vs Event_episodic_recall")+
+ scale_color_colorblind()+
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_episodic_recall)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Fusion score",
+       x = "Event_episodic_recall score", 
+       title = "IG_Fusion vs Event_episodic_recall")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_shared_perception)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Fusion score",
+       x = "Event_shared_perception score", 
+       title = "IG_Fusion vs Event_shared_perception")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_shared_perception, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "IG_Fusion score",
+       x = "Event_shared_perception score", 
+       title = "IG_Fusion vs Event_shared_perception")+
+ scale_color_colorblind()+
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_shared_perception)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Fusion score",
+       x = "Event_shared_perception score", 
+       title = "IG_Fusion vs Event_shared_perception")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_event_reflection)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Fusion score",
+       x = "Event_reflection score", 
+       title = "IG_Fusion vs Event_reflection")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_event_reflection, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "IG_Fusion score",
+       x = "Event_reflection score", 
+       title = "IG_Fusion vs Event_reflection")+
+ scale_color_colorblind()+
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_event_reflection)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Fusion score",
+       x = "Event_reflection score", 
+       title = "IG_Fusion vs Event_reflection")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_transformative_indiv)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Fusion score",
+       x = "Event_transformative_individual score", 
+       title = "IG_Fusion vs Event_transformative_individual")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_transformative_indiv, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "IG_Fusion score",
+       x = "Event_transformative_individual score", 
+       title = "IG_Fusion vs Event_transformative_individual")+
+ scale_color_colorblind()+
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_transformative_indiv)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Fusion score",
+       x = "Event_transformative_individual score", 
+       title = "IG_Fusion vs Event_transformative_individual")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_transformative_group)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Fusion score",
+       x = "Event_transformative_group score", 
+       title = "IG_Fusion vs Event_transformative_group")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_transformative_group, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "IG_Fusion score",
+       x = "Event_transformative_group score", 
+       title = "IG_Fusion vs Event_transformative_group")+
+ scale_color_colorblind()+
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = IG_Fusion,
+           x = event_transformative_group)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Fusion score",
+       x = "Event_transformative_group score", 
+       title = "IG_Fusion vs Event_transformative_group")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+## Varying intercept model with no predictors:
+
+m06 <- lmer(IG_Identification ~ 1 + (1 | Country), 
+            data = ds)
+
+summary(m06)
+#tab_model(m06)
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+## Varying intercept models with individual-level predictors:
+
+m07 <- lmer(IG_Identification~event_positive_affect+event_negative_affect+
+              event_episodic_recall+event_shared_perception+event_event_reflection+
+              event_transformative_indiv+event_transformative_group+Age+Female+
+              Married+Wealth_level+
+              (1 | Country), data = ds)
+
+summary(m07)
+#tab_model(m07)
+
+
+
+## ----error = F, message = F, warning = F, results = "hide"----------------------
+
+## Change class of all models so we can use stargazer():
+class(m06) <- "lmerMod"
+class(m07) <- "lmerMod"
+
+## Tabulated results:
+stargazer(m06, m07,
+          type = "html", 
+          star.cutoffs = c(0.05, 0.01, 0.001),
+          out = "table1.html")
+
+
+
+## -------------------------------------------------------------------------------
+htmltools::includeHTML("table1.html")
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+df01 <- ds %>% drop_na(IG_Identification)
+
+summary(df01$IG_Identification)
+
+ggplot(data = df01, 
+       aes(x = IG_Identification)) +
+  geom_histogram(color = "black",
+                 bins = 20)+
+  xlim(1, 7)+
+  geom_textvline(label = "Mean = 4.90", 
+                 xintercept = 4.90, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+
+  labs(y = "Frequency",
+       x = "IG_Identification score", 
+       title = "IG_Identification")+
+  theme_bw()
+
+
+ggplot(data = df01, 
+       aes(x = IG_Identification)) +
+  geom_histogram(color = "black",
+                 bins = 20)+
+  xlim(1, 7)+
+  labs(y = "Frequency",
+       x = "IG_Identification score", 
+       title = "IG_Identification")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+tbl02 <- aggregate(df01$IG_Identification, 
+                    by=list(df01$Country),
+                    FUN=mean)
+tbl02$Country <- tbl02$Group.1
+tbl02$IG_Identification <- tbl02$x
+tbl02 <- tbl02[, 3:4]
+tbl02
+
+ggplot(data = df01, 
+       aes(x = IG_Identification, 
+           y = Country)) +
+  geom_boxplot(color = "black",
+               fill = "grey")+
+  xlim(1, 7)+
+  geom_textvline(label = "Mean = 4.90", 
+                 xintercept = 4.90, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+
+  labs(y = "",
+       x = "IG_Identification score", 
+       title = "IG_Identification")+
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_positive_affect)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Identification score",
+       x = "Event_positive_affect score", 
+       title = "IG_Identification vs Event_positive_affect")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_positive_affect, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "IG_Identification score",
+       x = "Event_positive_affect score", 
+       title = "IG_Identification vs Event_positive_affect")+
+ scale_color_colorblind()+
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_positive_affect)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Identification score",
+       x = "Event_positive_affect score", 
+       title = "IG_Identification vs Event_positive_affect")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_negative_affect)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Identification score",
+       x = "Event_negative_affect score", 
+       title = "IG_Identification vs Event_negative_affect")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_negative_affect, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "IG_Identification score",
+       x = "Event_negative_affect score", 
+       title = "IG_Identification vs Event_negative_affect")+
+ scale_color_colorblind()+
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_negative_affect)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Identification score",
+       x = "Event_negative_affect score", 
+       title = "IG_Identification vs Event_negative_affect")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_episodic_recall)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Identification score",
+       x = "Event_episodic_recall score", 
+       title = "IG_Identification vs Event_episodic_recall")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_episodic_recall, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "IG_Identification score",
+       x = "Event_episodic_recall score", 
+       title = "IG_Identification vs Event_episodic_recall")+
+ scale_color_colorblind()+
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_episodic_recall)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Identification score",
+       x = "Event_episodic_recall score", 
+       title = "IG_Identification vs Event_episodic_recall")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_shared_perception)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Identification score",
+       x = "Event_shared_perception score", 
+       title = "IG_Identification vs Event_shared_perception")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_shared_perception, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "IG_Identification score",
+       x = "Event_shared_perception score", 
+       title = "IG_Identification vs Event_shared_perception")+
+ scale_color_colorblind()+
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_shared_perception)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Identification score",
+       x = "Event_shared_perception score", 
+       title = "IG_Identification vs Event_shared_perception")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_event_reflection)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Identification score",
+       x = "Event_reflection score", 
+       title = "IG_Identification vs Event_reflection")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_event_reflection, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "IG_Identification score",
+       x = "Event_reflection score", 
+       title = "IG_Identification vs Event_reflection")+
+ scale_color_colorblind()+
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_event_reflection)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Identification score",
+       x = "Event_reflection score", 
+       title = "IG_Identification vs Event_reflection")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_transformative_indiv)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Identification score",
+       x = "Event_transformative_individual score", 
+       title = "IG_Identification vs Event_transformative_individual")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_transformative_indiv, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "IG_Identification score",
+       x = "Event_transformative_individual score", 
+       title = "IG_Identification vs event_transformative_individual")+
+ scale_color_colorblind()+
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_transformative_indiv)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Identification score",
+       x = "Event_transformative_individual score", 
+       title = "IG_Identification vs Event_transformative_individual")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_transformative_group)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Identification score",
+       x = "Event_transformative_group score", 
+       title = "IG_Identification vs Event_transformative_group")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_transformative_group, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "IG_Identification score",
+       x = "Event_transformative_group score", 
+       title = "IG_Identification vs event_transformative_group")+
+ scale_color_colorblind()+
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = IG_Identification,
+           x = event_transformative_group)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "IG_Identification score",
+       x = "Event_transformative_group score", 
+       title = "IG_Identification vs Event_transformative_group")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+## Varying intercept model with no predictors:
+
+m08 <- lmer(OG_Bonds ~ 1 + (1 | Country), 
+            data = ds)
+
+summary(m08)
+#tab_model(m08)
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+## Varying intercept models with individual-level predictors:
+
+m09 <- lmer(OG_Bonds~event_positive_affect+event_negative_affect+
+              event_episodic_recall+event_shared_perception+event_event_reflection+
+              event_transformative_indiv+event_transformative_group+Age+Female+
+              Married+Wealth_level+
+              (1 | Country), data = ds)
+
+summary(m09)
+#tab_model(m09)
+
+
+
+## ----error = F, message = F, warning = F, results = "hide"----------------------
+
+## Change class of all models so we can use stargazer():
+class(m08) <- "lmerMod"
+class(m09) <- "lmerMod"
+
+## Tabulated results:
+stargazer(m08, m09,
+          type = "html", 
+          star.cutoffs = c(0.05, 0.01, 0.001),
+          out = "table1.html")
+
+
+
+## -------------------------------------------------------------------------------
+htmltools::includeHTML("table1.html")
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+df01 <- ds %>% drop_na(OG_Bonds)
+
+summary(df01$OG_Bonds)
+
+ggplot(data = df01, 
+       aes(x = OG_Bonds)) +
+  geom_histogram(color = "black",
+                 bins = 20)+
+  xlim(1, 7)+
+  geom_textvline(label = "Mean = 3.30", 
+                 xintercept = 3.30, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+
+  labs(y = "Frequency",
+       x = "OG_Bonds score", 
+       title = "OG_Bonds")+
+  theme_bw()
+
+ggplot(data = df01, 
+       aes(x = OG_Bonds)) +
+  geom_histogram(color = "black",
+                 bins = 20)+
+  xlim(1, 7)+
+  labs(y = "Frequency",
+       x = "OG_Bonds score", 
+       title = "OG_Bonds")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+tbl02 <- aggregate(df01$OG_Bonds, 
+                    by=list(df01$Country),
+                    FUN=mean)
+tbl02$Country <- tbl02$Group.1
+tbl02$OG_Bonds <- tbl02$x
+tbl02 <- tbl02[, 3:4]
+tbl02
+
+ggplot(data = df01, 
+       aes(x = OG_Bonds, 
+           y = Country)) +
+  geom_boxplot(color = "black",
+               fill = "grey")+
+  xlim(1, 7)+
+  geom_textvline(label = "Mean = 3.30", 
+                 xintercept = 3.30, 
+                 vjust = 1.1, 
+                 lwd = 1.05, 
+                 linetype = 2)+
+  labs(y = "",
+       x = "OG_Bonds score", 
+       title = "OG_Bonds")+
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_positive_affect)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "OG_Bonds score",
+       x = "Event_positive_affect score", 
+       title = "OG_Bonds vs Event_positive_affect")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_positive_affect, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "OG_Bonds score",
+       x = "Event_positive_affect score", 
+       title = "OG_Bonds vs event_positive_affect")+
+ scale_color_colorblind()+
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_positive_affect)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "OG_Bonds score",
+       x = "Event_positive_affect score", 
+       title = "OG_Bonds vs Event_positive_affect")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_negative_affect)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "OG_Bonds score",
+       x = "Event_negative_affect score", 
+       title = "OG_Bonds vs Event_negative_affect")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_negative_affect, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "OG_Bonds score",
+       x = "Event_negative_affect score", 
+       title = "OG_Bonds vs event_negative_affect")+
+ scale_color_colorblind()+
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_negative_affect)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "OG_Bonds score",
+       x = "Event_negative_affect score", 
+       title = "OG_Bonds vs Event_negative_affect")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_episodic_recall)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "OG_Bonds score",
+       x = "Event_episodic_recall score", 
+       title = "OG_Bonds vs Event_episodic_recall")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_episodic_recall, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "OG_Bonds score",
+       x = "Event_episodic_recall score", 
+       title = "OG_Bonds vs event_episodic_recall")+
+ scale_color_colorblind()+
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_episodic_recall)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "OG_Bonds score",
+       x = "Event_episodic_recall score", 
+       title = "OG_Bonds vs Event_episodic_recall")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_shared_perception)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "OG_Bonds score",
+       x = "Event_shared_perception score", 
+       title = "OG_Bonds vs Event_shared_perception")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_shared_perception, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "OG_Bonds score",
+       x = "Event_shared_perception score", 
+       title = "OG_Bonds vs event_shared_perception")+
+ scale_color_colorblind()+
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_shared_perception)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "OG_Bonds score",
+       x = "Event_shared_perception score", 
+       title = "OG_Bonds vs Event_shared_perception")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_event_reflection)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "OG_Bonds score",
+       x = "Event_reflection score", 
+       title = "OG_Bonds vs Event_reflection")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_event_reflection, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "OG_Bonds score",
+       x = "Event_reflection score", 
+       title = "OG_Bonds vs Event_reflection")+
+ scale_color_colorblind()+
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_event_reflection)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "OG_Bonds score",
+       x = "Event_reflection score", 
+       title = "OG_Bonds vs Event_reflection")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_transformative_indiv)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "OG_Bonds score",
+       x = "Event_transformative_individual score", 
+       title = "OG_Bonds vs Event_transformative_individual")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_transformative_indiv, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "OG_Bonds score",
+       x = "Event_transformative_individual score", 
+       title = "OG_Bonds vs Event_transformative_individual")+
+ scale_color_colorblind()+
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_transformative_indiv)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "OG_Bonds score",
+       x = "Event_transformative_individual score", 
+       title = "OG_Bonds vs Event_transformative_individual")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F----------------------------------------
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_transformative_group)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "OG_Bonds score",
+       x = "Event_transformative_group score", 
+       title = "OG_Bonds vs Event_transformative_group")+
+  # facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_transformative_group, 
+           col = Country, 
+           linetype = Country)) +
+  geom_point()+
+  xlim(1, 7)+
+ ylim(1, 7)+
+  stat_smooth(method="lm", se = F) +
+  labs(y = "OG_Bonds score",
+       x = "Event_transformative_group score", 
+       title = "OG_Bonds vs Event_transformative_group")+
+ scale_color_colorblind()+
+  theme_bw()
+
+ggplot(data = ds, 
+       aes(y = OG_Bonds,
+           x = event_transformative_group)) +
+  geom_point()+
+  xlim(1, 7)+
+  ylim(1, 7)+
+  stat_smooth(method="lm", 
+              fullrange=TRUE) +
+  labs(y = "OG_Bonds score",
+       x = "Event_transformative_group score", 
+       title = "OG_Bonds vs Event_transformative_group")+
+  facet_wrap( ~ Country, nrow = 2) +
+  theme_bw()
+
+
+
+## ----error = F, message = F, warning = F, results = "hide"----------------------
+
+## Tabulated results:
+stargazer(m04, m05, m06, m07, m08, m09,
+          type = "html", 
+          star.cutoffs = c(0.05, 0.01, 0.001),
+          out = "table1.html")
+
+
+## -------------------------------------------------------------------------------
+htmltools::includeHTML("table1.html")
+
+## Write final dataset file:
+# fwrite(ds, file = "~/Desktop/oxford/data/BCL/BCL02.csv")
+
+
