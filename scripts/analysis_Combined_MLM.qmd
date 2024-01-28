@@ -112,6 +112,31 @@ rm(ds01, ds02)
 ```
 
 
+### Data cleaning
+
+**Criteria:**
+
+- Survey duration
+
+- SD on unrelated scales
+
+- Bad open ended responses
+
+**Additional criteria:**
+
+- Missing data in scales
+
+- Multiple imputation for missing responses 
+
+```{r, error = F, message = F, warning = F}
+
+
+
+
+
+```
+
+
 ## Variable: Sample size by Country 
 
 ```{r, error = F, message = F, warning = F}

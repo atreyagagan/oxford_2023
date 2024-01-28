@@ -37,8 +37,8 @@ pacman::p_load(data.table, tidyverse, haven, vtable,
                corpus, wordcloud, wordcloud2, RColorBrewer)
 
 ## Import dataset:
-# ds <- fread("~/Desktop/oxford/data/uganda/Uganda Data Community.csv")
-ds <- read_excel("~/Desktop/oxford/data/uganda/Uganda Data Entry.xlsx")
+ds <- fread("/home/gagan/Desktop/oxford/data/uganda/Uganda_Source_updated.csv")
+#ds <- read_excel("~/Desktop/oxford/data/uganda/Uganda Data Entry.xlsx")
 
 options(digits = 2)
 
@@ -472,6 +472,8 @@ table(ds$Ethnicity)
 
 head(table(ds$Level_of_education), n = 15)
 
+ds$education <- ds$Level_of_education
+
 ```
 
 
@@ -555,7 +557,7 @@ The test is significant, again suggesting that factor analysis is appropriate.
 ## Parallel test
 
 ```{r, warning=F, message=F}
-parallel <- fa.parallel(bonds)
+# parallel <- fa.parallel(bonds)
 
 ```
 
@@ -742,7 +744,7 @@ The test is significant, again suggesting that factor analysis is appropriate.
 ## Parallel test
 
 ```{r, warning=F, message=F}
-parallel <- fa.parallel(bonds)
+# parallel <- fa.parallel(bonds)
 
 ```
 
@@ -944,7 +946,7 @@ The test is significant, again suggesting that factor analysis is appropriate.
 ## Parallel test
 
 ```{r, warning=F, message=F}
-parallel <- fa.parallel(bonds)
+# parallel <- fa.parallel(bonds)
 
 ```
 
@@ -1167,7 +1169,7 @@ The test is significant, again suggesting that factor analysis is appropriate.
 ## Parallel test
 
 ```{r, error = F, message = F, warning = F}
-parallel <- fa.parallel(leadership)
+# parallel <- fa.parallel(leadership)
 
 ```
 
@@ -2107,7 +2109,7 @@ KMO(r=cor(ig_marriage))
 cortest.bartlett(ig_marriage)
 
 ## Parallel test
-parallel <- fa.parallel(ig_marriage)
+# parallel <- fa.parallel(ig_marriage)
 
 ```
 
@@ -2355,7 +2357,7 @@ KMO(r=cor(og_affect))
 cortest.bartlett(og_affect)
 
 ## Parallel test
-parallel <- fa.parallel(og_affect)
+# parallel <- fa.parallel(og_affect)
 
 ```
 
@@ -2396,7 +2398,7 @@ KMO(r=cor(og_affect))
 cortest.bartlett(og_affect)
 
 ## Parallel test
-parallel <- fa.parallel(og_affect)
+# parallel <- fa.parallel(og_affect)
 
 ## Reliability analysis:
 psych::alpha(og_affect)
@@ -2595,7 +2597,7 @@ KMO(r=cor(imagistic))
 cortest.bartlett(imagistic)
 
 ## Parallel test
-parallel <- fa.parallel(imagistic)
+# parallel <- fa.parallel(imagistic)
 
 ```
 
@@ -3021,9 +3023,23 @@ htmltools::includeHTML("table1.html")
 ```
 
 
+### Write datset:
+
+```{r}
+
+fwrite(ds, file = "~/Desktop/oxford/data/cleands/dsuga.csv")
+
+```
+
+
+
+
+
+
+
 # **Section 19. Text Analysis**
 
-```{r, error = F, message = F, warning = F}
+```{r, error = F, message = F, warning = F, eval=F}
 
 ds02 <- fread("~/Desktop/oxford/data/uganda/Ethnic Data Uganda.csv")
 
@@ -3046,7 +3062,7 @@ table(ds$ethnicity)
 ```
 
 
-```{r, error = F, message = F, warning = F}
+```{r, error = F, message = F, warning = F, eval=F}
 
 ## Import text related datasets:
 bing <- as.data.table(get_sentiments("bing"))
@@ -3069,7 +3085,7 @@ df2 <- merge(corpus1, bing, by = "word")
 
 ## Word cloud: Full sample
 
-```{r, error = F, message = F, warning = F}
+```{r, error = F, message = F, warning = F, eval=F}
 
 a <- sort(table(corpus1$word), decreasing = T)
 
@@ -3087,7 +3103,7 @@ wordcloud(words = tblwc$V1,
 
 ## Word cloud: Bantu 
 
-```{r, error = F, message = F, warning = F}
+```{r, error = F, message = F, warning = F, eval=F}
 
 corpus2 <- corpus1[corpus1$ethnicity=="Bantu",]
 a <- sort(table(corpus2$word), decreasing = T)
@@ -3107,7 +3123,7 @@ wordcloud(words = tblwc$V1,
 
 ## Word cloud: Luo
 
-```{r, error = F, message = F, warning = F}
+```{r, error = F, message = F, warning = F, eval=F}
 
 corpus2 <- corpus1[corpus1$ethnicity=="Luo",]
 a <- sort(table(corpus2$word), decreasing = T)
@@ -3126,7 +3142,7 @@ wordcloud(words = tblwc$V1,
 
 ## Word cloud: Nilotic
 
-```{r, error = F, message = F, warning = F}
+```{r, error = F, message = F, warning = F, eval=F}
 
 corpus2 <- corpus1[corpus1$ethnicity=="Nilotic",]
 a <- sort(table(corpus2$word), decreasing = T)
@@ -3146,7 +3162,7 @@ wordcloud(words = tblwc$V1,
 
 ## Word  count
 
-```{r, error = F, message = F, warning = F}
+```{r, error = F, message = F, warning = F, eval=F}
 
 df2 <- as.data.table(df2)
 
@@ -3211,7 +3227,7 @@ dp1
 
 ## Sentiment analysis 
 
-```{r, error = F, message = F, warning = F}
+```{r, error = F, message = F, warning = F, eval=F}
 
 ## Boxplot:
 
@@ -3255,7 +3271,7 @@ dp01
 ```
 
 
-```{r, error = F, message = F, warning = F}
+```{r, error = F, message = F, warning = F, eval=F}
 
 ## Boxplot:
 

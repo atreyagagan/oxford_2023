@@ -36,7 +36,8 @@ pacman::p_load(data.table, tidyverse, haven, labelled, vtable,
                corrplot, tm)
 
 ## Import dataset:
-ds <- read_sav("~/Desktop/oxford/data/pakistan/Pakistan Data.sav")
+ds <- read_sav("/home/gagan/Desktop/oxford/data/pakistan/Pakistan Data.sav")
+# ds <- fread("/home/gagan/Desktop/oxford/data/pakistan/Pakistan_Source_updated.csv")
 
 options(digits = 2)
 
@@ -185,7 +186,7 @@ ds$income <- as.numeric(ds$Annual_income)
 summary(ds$income)
 
 ## Remove outliers (greater than 10 million):
-ds <- ds[ds$income < 10000000, ]
+# ds <- ds[ds$income < 10000000, ]
 
 # ds$income <- ifelse(ds$income < 10000000, ds$income, NA)
 
@@ -228,9 +229,9 @@ ds3$SES <- ds3$`ds$fses`
 
 mtx <- cor(ds3[, c(4:6)])
 
-corrplot(mtx, method = "number", number.cex = 1.0,
-         col=c("white", "darkred", "red",
-               "darkgrey", "blue", "darkblue"))
+#corrplot(mtx, method = "number", number.cex = 1.0,
+#         col=c("white", "darkred", "red",
+#               "darkgrey", "blue", "darkblue"))
 
 
 ```
@@ -539,7 +540,7 @@ The test is significant, again suggesting that factor analysis is appropriate.
 ## Parallel test
 
 ```{r, warning=F, message=F}
-parallel <- fa.parallel(bonds)
+# parallel <- fa.parallel(bonds)
 
 ```
 
@@ -588,7 +589,7 @@ corrplot(mtx1, method = "number", number.cex = 0.7,
                "darkgrey", "blue", "darkblue"))
 
 ## Parallel test
-parallel <- fa.parallel(bonds)
+# parallel <- fa.parallel(bonds)
 
 ## factor loadings: 4 factor model:
 fit04 <- factanal(bonds, 4, rotation="promax")
@@ -790,7 +791,7 @@ cortest.bartlett(leadership)
 
 ```{r, error = F, message = F, warning = F}
 
-parallel <- fa.parallel(leadership)
+# parallel <- fa.parallel(leadership)
 
 ```
 
@@ -936,21 +937,21 @@ ds$OG_Bonds <- as.numeric((ds$OGF01+ds$OGF02+ds$OGF03+
 
 ## Four regression models predicting endorsement and experience of BCL / BBL:
 
-lm01 <- lm(Endorse_BCL~IG_Fusion+IG_Identification+OG_Bonds+Age+Female+Married+`SES-`,
-           data = ds)
+#lm01 <- lm(Endorse_BCL~IG_Fusion+IG_Identification+OG_Bonds+Age+Female+Married+`SES-`,
+#           data = ds)
 
-lm02 <- lm(Experience_BCL~IG_Fusion+IG_Identification+OG_Bonds+Age+Female+Married+`SES-`, 
-           data = ds)
+#lm02 <- lm(Experience_BCL~IG_Fusion+IG_Identification+OG_Bonds+Age+Female+Married+`SES-`, 
+#           data = ds)
 
-lm03 <- lm(Endorse_BBL~IG_Fusion+IG_Identification+OG_Bonds+Age+Female+Married+`SES-`, 
-           data = ds)
+#lm03 <- lm(Endorse_BBL~IG_Fusion+IG_Identification+OG_Bonds+Age+Female+Married+`SES-`, 
+#           data = ds)
 
-lm04 <- lm(Experience_BBL~IG_Fusion+IG_Identification+OG_Bonds+Age+Female+Married+`SES-`, 
-           data = ds)
+#lm04 <- lm(Experience_BBL~IG_Fusion+IG_Identification+OG_Bonds+Age+Female+Married+`SES-`, 
+#           data = ds)
 ```
 
 
-```{r, error = F, message = F, warning = F, results = "hide"}
+```{r, error = F, message = F, warning = F, results = "hide", eval = F}
 
 ## Tabulated results:
 
@@ -1176,7 +1177,7 @@ corrplot(mtx, method = "number", number.cex = 0.7,
 This set of regression models have additional predictor variables compared to the last set. It adds empathic concern, perspective taking, and perceived history of discrimination as additional predictors. 
 
 
-```{r, error = F, message = F, warning = F}
+```{r, error = F, message = F, warning = F, eval = F}
 
 ## Four regression models predicting endorsement and experience of BCL / BBL:
 
@@ -1195,7 +1196,7 @@ lm04 <- lm(Experience_BBL~IG_Fusion+IG_Identification+OG_Bonds+empathic_concern+
 ```
 
 
-```{r, error = F, message = F, warning = F, results = "hide"}
+```{r, error = F, message = F, warning = F, results = "hide", eval = F}
 
 ## Tabulated results:
 
@@ -1218,7 +1219,7 @@ htmltools::includeHTML("table1.html")
 
 This set of regression models have different outcome variables which are: outgroup cooperation, outgroup hostility, and willingness to fight outgroup. 
 
-```{r, error = F, message = F, warning = F}
+```{r, error = F, message = F, warning = F, eval = F}
 
 lm01 <- lm(og_cooperation~IG_Fusion+IG_Identification+OG_Bonds+empathic_concern+perspective_taking+history_discrimination+Age+Female+Married+`SES-`, 
            data = ds)
@@ -1232,7 +1233,7 @@ lm03 <- lm(fight_outgroup~IG_Fusion+IG_Identification+OG_Bonds+empathic_concern+
 ```
 
 
-```{r, error = F, message = F, warning = F, results = "hide"}
+```{r, error = F, message = F, warning = F, results = "hide", eval = F}
 
 ## Tabulated results:
 
@@ -1560,30 +1561,30 @@ names(og_affect) <- sub('ds\\$', '', names(og_affect))
 og_affect <- na.omit(og_affect)
 mtx1 <- cor(og_affect[, c(1:6)])
 
-corrplot(mtx1, method = "number", number.cex = 0.7,
-         col=c("white", "darkred", "red",
-               "darkgrey", "blue", "darkblue"))
+#corrplot(mtx1, method = "number", number.cex = 0.7,
+#         col=c("white", "darkred", "red",
+#               "darkgrey", "blue", "darkblue"))
 
 ## Kaiser-Meyer-Olkin (KMO) test of factorability
 KMO(r=cor(og_affect))
 
 ## Bartlett's test of sphericity
-cortest.bartlett(og_affect)
+#cortest.bartlett(og_affect)
 
 ## Parallel test
-parallel <- fa.parallel(og_affect)
+# parallel <- fa.parallel(og_affect)
 
 ```
 
 Based on the scree plot, number of factors = 1.  
 
-```{r, error = F, message = F, warning = F}
+```{r, error = F, message = F, warning = F, eval = F}
 fit01 <- factanal(og_affect, 1, rotation="promax")
 fit01
 
 ## Reliability analysis
 
-psych::alpha(og_affect)
+# psych::alpha(og_affect)
 ```
 
 Based on the output of factor analysis as well as reliability, it seems like one item ("concerned to unconcerned") is problematic. Here is the scale without that item:
@@ -1601,21 +1602,21 @@ names(og_affect) <- sub('ds\\$', '', names(og_affect))
 og_affect <- na.omit(og_affect)
 mtx1 <- cor(og_affect[, c(1:5)])
 
-corrplot(mtx1, method = "number", number.cex = 0.7,
-         col=c("white", "darkred", "red",
-               "darkgrey", "blue", "darkblue"))
+#corrplot(mtx1, method = "number", number.cex = 0.7,
+#         col=c("white", "darkred", "red",
+#               "darkgrey", "blue", "darkblue"))
 
 ## Kaiser-Meyer-Olkin (KMO) test of factorability
-KMO(r=cor(og_affect))
+#KMO(r=cor(og_affect))
 
 ## Bartlett's test of sphericity
-cortest.bartlett(og_affect)
+#cortest.bartlett(og_affect)
 
 ## Parallel test
-parallel <- fa.parallel(og_affect)
+# parallel <- fa.parallel(og_affect)
 
 ## Reliability analysis:
-psych::alpha(og_affect)
+# psych::alpha(og_affect)
 
 ```
 
@@ -1658,6 +1659,10 @@ ds$freq_positive_contact <- ds$pc02
 ds$freq_negative_contact <- ds$nc02
 ds$perspectiveXdiscrimination <- ds$perspective_taking*ds$history_discrimination
 
+```
+
+```{r, error = F, message = F, warning = F, eval = F}
+
 ## Four regression models predicting endorsement and experience of BCL / BBL:
 
 lm01 <- lm(Endorse_BCL~IG_Fusion+IG_Identification+OG_Bonds+freq_positive_contact+freq_negative_contact+empathic_concern+perspective_taking+history_discrimination+perspectiveXdiscrimination+Age+Female+Married+`SES-`, 
@@ -1675,7 +1680,7 @@ lm04 <- lm(Experience_BBL~IG_Fusion+IG_Identification+OG_Bonds+freq_positive_con
 ```
 
 
-```{r, error = F, message = F, warning = F, results = "hide"}
+```{r, error = F, message = F, warning = F, results = "hide", eval = F}
 
 ## Tabulated results:
 
@@ -1698,7 +1703,7 @@ htmltools::includeHTML("table1.html")
 
 Same predictors as section 14 above, but with different outcomes. This set of regression models has an additional outcome variable: affect towards outgroup. 
 
-```{r, error = F, message = F, warning = F}
+```{r, error = F, message = F, warning = F, eval = F}
 
 ## Four regression models:
 
@@ -1717,7 +1722,7 @@ lm04 <- lm(og_affect~IG_Fusion+IG_Identification+OG_Bonds+freq_positive_contact+
 ```
 
 
-```{r, error = F, message = F, warning = F, results = "hide"}
+```{r, error = F, message = F, warning = F, results = "hide", eval = F}
 
 ## Tabulated results:
 
@@ -1819,7 +1824,7 @@ KMO(r=cor(imagistic))
 cortest.bartlett(imagistic)
 
 ## Parallel test
-parallel <- fa.parallel(imagistic)
+# parallel <- fa.parallel(imagistic)
 
 ```
 
@@ -2196,7 +2201,7 @@ corrplot(mtx, method = "number", number.cex = 0.7,
 
 # **Section 18. Regression models: Relationship between imagistic experience and IG/OG fusion/identification **
 
-```{r, error = F, message = F, warning = F}
+```{r, error = F, message = F, warning = F, eval = F}
 
 ## Four regression models predicting IG/OG Fusion/Identification:
 
@@ -2215,7 +2220,7 @@ event_transformative_indiv+event_transformative_group+Age+Female+Married+`SES-`,
 ```
 
 
-```{r, error = F, message = F, warning = F, results = "hide"}
+```{r, error = F, message = F, warning = F, results = "hide", eval = F}
 
 ## Tabulated results:
 
@@ -2227,8 +2232,18 @@ stargazer(lm01, lm02,
 
 ```
 
-
+R
 ```{r}
 htmltools::includeHTML("table1.html")
+```
+
+
+
+### Write datset:
+
+```{r}
+
+fwrite(ds, file = "~/Desktop/oxford/data/cleands/dspak.csv")
+
 ```
 

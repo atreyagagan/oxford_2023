@@ -38,8 +38,7 @@ pacman::p_load(data.table, tidyverse, haven, labelled, vtable,
                corrplot, tm, readxl)
 
 ## Import dataset:
-ds <- read_excel("~/Desktop/oxford/data/gambia/GAMBIA Data Work.xlsx")
-
+ds <- fread("/home/gagan/Desktop/oxford/data/gambia/Gambia_Source_updated.csv")
 ```
 
 ## Variable: Age
@@ -192,7 +191,7 @@ ds$income <- as.numeric(gsub("\\D", "", ds$Annual_income))
 summary(ds$income)
 
 ## Remove outliers (greater than 5 million):
-ds <- ds[ds$income < 5000000, ]
+#ds <- ds[ds$income < 5000000, ]
 
 summary(ds$income)
 
@@ -536,7 +535,7 @@ cortest.bartlett(bonds)
 
 ```{r, warning=F, message=F}
 
-parallel <- fa.parallel(bonds)
+## parallel <- fa.parallel(bonds)
 
 ```
 
@@ -593,7 +592,7 @@ corrplot(mtx1, method = "number", number.cex = 0.7,
          col=c("white", "darkred", "red",
                "darkgrey", "blue", "darkblue"))
 
-parallel <- fa.parallel(bonds)
+## parallel <- fa.parallel(bonds)
 
 ```
 
@@ -784,7 +783,7 @@ cortest.bartlett(leadership)
 
 ```{r, error = F, message = F, warning = F}
 
-parallel <- fa.parallel(leadership)
+# parallel <- fa.parallel(leadership)
 
 ```
 
@@ -1463,7 +1462,7 @@ KMO(r=cor(ig_marriage))
 cortest.bartlett(ig_marriage)
 
 ## Parallel test
-parallel <- fa.parallel(ig_marriage)
+# parallel <- fa.parallel(ig_marriage)
 
 ## 1 factor solution:
 fit01 <- factanal(ig_marriage, 1, rotation="promax")
@@ -1653,7 +1652,7 @@ KMO(r=cor(og_affect))
 cortest.bartlett(og_affect)
 
 ## Parallel test
-parallel <- fa.parallel(og_affect)
+# parallel <- fa.parallel(og_affect)
 
 ## Reliability test
 psych::alpha(og_affect)
@@ -1878,7 +1877,7 @@ KMO(r=cor(imagistic))
 cortest.bartlett(imagistic)
 
 ## Parallel test
-parallel <- fa.parallel(imagistic)
+# parallel <- fa.parallel(imagistic)
 
 ```
 
@@ -2296,5 +2295,14 @@ stargazer(lm01, lm02,
 
 ```{r}
 htmltools::includeHTML("table1.html")
+```
+
+
+### Write datset:
+
+```{r}
+
+fwrite(ds, file = "~/Desktop/oxford/data/cleands/dsgmb.csv")
+
 ```
 

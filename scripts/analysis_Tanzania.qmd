@@ -1,4 +1,3 @@
----
 title: "Data Analysis and Visualization <br> Tanzania Community Data"
 author: Gagan Atreya
 date: today
@@ -39,7 +38,7 @@ pacman::p_load(data.table, tidyverse, haven, labelled, vtable,
 
 #ds <- read_excel("~/Desktop/oxford/data/tanzania/Tanzania Data Entry.xlsx")
 
-ds <- fread("~/Desktop/oxford/data/tanzania/Tanzania Data Entry - Sheet1.csv")
+ds <- fread("/home/gagan/Desktop/oxford/data/tanzania/Tanzania_Source_updated.csv")
 
 ```
 
@@ -548,7 +547,7 @@ cortest.bartlett(bonds)
 
 ```{r, warning=F, message=F}
 
-parallel <- fa.parallel(bonds)
+# parallel <- fa.parallel(bonds)
 
 ```
 
@@ -605,7 +604,7 @@ corrplot(mtx1, method = "number", number.cex = 0.7,
          col=c("white", "darkred", "red",
                "darkgrey", "blue", "darkblue"))
 
-parallel <- fa.parallel(bonds)
+# parallel <- fa.parallel(bonds)
 
 ```
 
@@ -796,7 +795,7 @@ cortest.bartlett(leadership)
 
 ```{r, error = F, message = F, warning = F}
 
-parallel <- fa.parallel(leadership)
+# parallel <- fa.parallel(leadership)
 
 ```
 
@@ -1589,7 +1588,7 @@ KMO(r=cor(og_affect))
 cortest.bartlett(og_affect)
 
 ## Parallel test
-parallel <- fa.parallel(og_affect)
+# parallel <- fa.parallel(og_affect)
 
 ## Reliability test
 psych::alpha(og_affect)
@@ -1812,7 +1811,7 @@ KMO(r=cor(imagistic))
 cortest.bartlett(imagistic)
 
 ## Parallel test
-parallel <- fa.parallel(imagistic)
+# parallel <- fa.parallel(imagistic)
 
 ```
 
@@ -2232,4 +2231,14 @@ stargazer(lm01, lm02,
 htmltools::includeHTML("table1.html")
 ```
 
+
+
+
+### Write datset:
+
+```{r}
+
+fwrite(ds, file = "~/Desktop/oxford/data/cleands/dstza.csv")
+
+```
 
